@@ -12,8 +12,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
-- Phase 01-01: gsd-tools.js references updated to gsd-tools.cjs in agent definitions to match recent rename
-- Phase 01-01: Agent core logic preserved verbatim -- only .js->.cjs fix applied
+- Phase 01-01: Agent definitions kept gsd-tools.js references matching installed version (repo renamed to .cjs but install is still .js)
+- Phase 01-01: Agent core logic preserved verbatim -- no structural changes
 - Phase 01-02: Created repo source tree at skills/gsd-execute-phase/ for version control alongside installed ~/.claude/skills/ copy
 - Phase 01-02: PIPE-03 deferred: executor keeps per-task commit behavior, full enforcement in Phase 3 review skill
 
