@@ -25,7 +25,7 @@ Orchestrator stays lean (~10-15% context). Each executor agent gets fresh 200k c
 ## Step 1: Initialize
 
 ```bash
-INIT=$(node /Users/nick/.claude/get-shit-done/bin/gsd-tools.cjs init execute-phase "$PHASE_ARG")
+INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.js init execute-phase "$PHASE_ARG")
 ```
 
 Parse: `executor_model`, `verifier_model`, `commit_docs`, `parallelization`, `branching_strategy`, `branch_name`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `plans`, `incomplete_plans`, `plan_count`, `incomplete_count`.
@@ -43,7 +43,7 @@ Check `branching_strategy` from init:
 ## Step 3: Discover and Group Plans
 
 ```bash
-PLAN_INDEX=$(node /Users/nick/.claude/get-shit-done/bin/gsd-tools.cjs phase-plan-index "$PHASE_NUMBER")
+PLAN_INDEX=$(node ~/.claude/get-shit-done/bin/gsd-tools.js phase-plan-index "$PHASE_NUMBER")
 ```
 
 Parse: `plans[]` (each with `id`, `wave`, `autonomous`, `objective`, `has_summary`), `waves`, `incomplete`.
@@ -71,14 +71,13 @@ Task(
 
   <execution_context>
   Read these workflow files for execution instructions:
-  @/Users/nick/.claude/get-shit-done/workflows/execute-plan.md
-  @/Users/nick/.claude/get-shit-done/templates/summary.md
-  @/Users/nick/.claude/get-shit-done/references/checkpoints.md
-  @/Users/nick/.claude/get-shit-done/references/tdd.md
+  @~/.claude/get-shit-done/workflows/execute-plan.md
+  @~/.claude/get-shit-done/templates/summary.md
+  @~/.claude/get-shit-done/references/checkpoints.md
+  @~/.claude/get-shit-done/references/tdd.md
   </execution_context>
 
   <files_to_read>
-  Read these files at execution start using the Read tool:
   - Plan: {phase_dir}/{plan_file}
   - State: .planning/STATE.md
   - Config: .planning/config.json (if exists)
@@ -144,7 +143,7 @@ Read status from VERIFICATION.md:
 Mark phase complete in ROADMAP.md (date, status).
 
 ```bash
-node /Users/nick/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(phase-{X}): complete phase execution" --files .planning/ROADMAP.md .planning/STATE.md .planning/phases/{phase_dir}/*-VERIFICATION.md .planning/REQUIREMENTS.md
+node ~/.claude/get-shit-done/bin/gsd-tools.js commit "docs(phase-{X}): complete phase execution" --files .planning/ROADMAP.md .planning/STATE.md .planning/phases/{phase_dir}/*-VERIFICATION.md .planning/REQUIREMENTS.md
 ```
 
 ## Step 7: Offer Next
