@@ -19,9 +19,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 01-03: No new decisions -- pure alignment fix closing verification gaps
 - Phase 02-01: MCP protocol added as dedicated <mcp_protocol> XML section (not embedded in tool_strategy)
 - Phase 02-01: Confidence tagging uses 3 levels (HIGH/MEDIUM/LOW) based on source quality
-- Phase 02-01: Planner trusts HIGH-confidence RESEARCH.md entries instead of re-querying Context7
+- Phase 02-01: Planner trusts HIGH-confidence RESEARCH.md entries instead of re-querying Context7 (SUPERSEDED by Quick-1: now always verifies via Context7)
 - Phase 02-02: Replaced reactive tool_strategy with proactive mcp_protocol (verify before every implementation)
-- Phase 02-02: RESEARCH.md-first pattern: executor reads researcher output before Context7 to avoid double-querying
+- Phase 02-02: RESEARCH.md-first pattern: executor reads researcher output before Context7 to avoid double-querying (SUPERSEDED by Quick-1: now always verifies via Context7)
 - Phase 02-02: Used web-design-guidelines (not non-existent frontend-design) in skill detection heuristics
 - Phase 03-01: Output file named RUNTIME-VERIFICATION.md (not VERIFICATION.md) to avoid collision with existing goal-backward verification
 - Phase 03-01: Edit tool excluded from allowed-tools enforcing PIPE-04 (verifier never modifies source)
@@ -83,6 +83,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 07 Plan 01 complete: planner prototype creation + plan checker consistency dimension (2min)
 - 2026-02-16 Phase 07 Plan 02 complete: prototype-guided execution + auto-verify frontend in orchestrator (2min)
 - 2026-02-16 Phase 08 Plan 01 complete: parallel verify + review in execute-phase Step 4.5 with result matrix (2min)
+- 2026-02-16 Quick Task 1 complete: removed RESEARCH.md-first skip pattern, Context7 always-verify in planner+executor (7min)
 
 ## Accumulated Context
 
@@ -95,5 +96,5 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed 08-01-PLAN.md
+**Stopped at:** Completed Quick Task 1 (Context7-always in planner+executor)
 **Timestamp:** 2026-02-16
