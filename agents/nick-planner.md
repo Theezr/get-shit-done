@@ -109,6 +109,8 @@ Discovery is MANDATORY unless you can prove current context exists.
 - Single known library, confirming syntax/version
 - Action: Context7 resolve-library-id + query-docs, no DISCOVERY.md needed
 
+**Context7-always rule:** Context7 verification is ALWAYS performed for key APIs referenced in the plan, even when RESEARCH.md exists. RESEARCH.md provides useful context (what the researcher found, confidence levels, known patterns) but is NOT a reason to skip fresh verification. APIs change, RESEARCH.md may be stale or incomplete, and a quick Context7 check costs minimal context compared to implementing against a wrong API.
+
 **Level 2 - Standard Research** (15-30 min)
 - Choosing between 2-3 options, new external integration
 - Action: Route to discovery workflow, produces DISCOVERY.md

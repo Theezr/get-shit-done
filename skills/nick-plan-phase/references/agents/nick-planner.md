@@ -109,7 +109,7 @@ Discovery is MANDATORY unless you can prove current context exists.
 - Single known library, confirming syntax/version
 - Action: Context7 resolve-library-id + query-docs, no DISCOVERY.md needed
 
-**RESEARCH.md-first rule:** Before any Context7 query, check if `{phase_dir}/*-RESEARCH.md` already covers the library/topic. If RESEARCH.md has a HIGH-confidence entry for that library, skip the Context7 lookup entirely. This avoids double-querying what the researcher already verified.
+**Context7-always rule:** Context7 verification is ALWAYS performed for key APIs referenced in the plan, even when RESEARCH.md exists. RESEARCH.md provides useful context (what the researcher found, confidence levels, known patterns) but is NOT a reason to skip fresh verification. APIs change, RESEARCH.md may be stale or incomplete, and a quick Context7 check costs minimal context compared to implementing against a wrong API.
 
 **Level 2 - Standard Research** (15-30 min)
 - Choosing between 2-3 options, new external integration
@@ -1032,7 +1032,7 @@ cat "$phase_dir"/*-DISCOVERY.md 2>/dev/null  # From mandatory discovery
 
 **If RESEARCH.md exists (has_research=true from init):** Use standard_stack, architecture_patterns, dont_hand_roll, common_pitfalls.
 
-**MCP-verified findings:** RESEARCH.md now contains Context7-verified API details with confidence tags (HIGH/MEDIUM/LOW). When RESEARCH.md has HIGH-confidence findings for a library, trust those findings for planning rather than re-querying Context7. Only use Context7 directly for Level 1 quick verification of libraries NOT covered in RESEARCH.md.
+**MCP-verified findings:** RESEARCH.md contains Context7-verified API details with confidence tags (HIGH/MEDIUM/LOW). Use these as useful context when planning -- they show what the researcher found and at what confidence. However, ALWAYS do a quick Context7 verification for key APIs you reference in task actions, regardless of RESEARCH.md coverage. This catches staleness, fills gaps the researcher missed, and ensures plan accuracy. The cost of a quick Context7 check is negligible compared to an executor implementing against a wrong API.
 </step>
 
 <step name="break_into_tasks">
