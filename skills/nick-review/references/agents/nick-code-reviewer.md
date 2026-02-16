@@ -222,6 +222,9 @@ findings:
   high: N
   medium: N
   low: N
+security:
+  owasp_loaded: true | false
+  owasp_findings: N        # 0 if owasp loaded but no findings; omit entire security block if not loaded
 ---
 ```
 
@@ -265,6 +268,19 @@ findings:
 
 ### Patterns Confirmed
 - [what was done well]
+
+## Security Findings
+
+[Only include this section when owasp-security skill was loaded in Step 2]
+
+| # | OWASP Category | Severity | File | Finding | Recommendation |
+|---|----------------|----------|------|---------|----------------|
+| 1 | A01:Broken Access Control | Critical | `file.ts:42` | [description] | [fix] |
+| 2 | A03:Injection | High | `file.ts:88` | [description] | [fix] |
+
+[If no security findings: "No security issues identified. OWASP Top 10 categories reviewed against all applicable files."]
+
+**Categories Reviewed:** [List which A01-A10 categories were applicable based on the codebase]
 
 ## Test Results
 
