@@ -1,14 +1,14 @@
 # Project State
 
 ## Current Position
-**Phase:** 05-convert-commands-agents-and-skills-from-gsd-to-nick-prefix
-**Current Plan:** 3 of 3
-**Status:** Phase 5 verified and complete (16/16 must-haves passed)
+**Phase:** 06-fix-nick-skill-paths-use-nick-commands-in-flow-recommendations-fix-gsd-tools-cjs-path-and-relative-reference-resolution
+**Current Plan:** 1 of 1
+**Status:** Phase 6 Plan 01 complete -- all gsd-tools.js references fixed to .cjs
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** All phases complete — milestone ready for completion
+**Current focus:** Phase 6 executing -- fix gsd-tools.cjs paths in nick skills
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -43,6 +43,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 05-02: Preserved all package-managed references: gsd-tools.js, /gsd: commands, get-shit-done paths, gsd-file-manifest.json
 - Phase 05-03: Installed nick-prefixed skills at ~/.claude/skills/ where Claude Code loads them
 - Phase 05-03: All 26 gsd-prefixed user files deleted after confirming nick-prefixed replacements exist
+- Phase 06-01: Literal string replacement only -- no context-dependent or structural changes needed
+- Phase 06-01: /gsd: command recommendations NOT changed -- confirmed /gsd: commands exist as package-managed slash commands
+- Phase 06-01: @-reference resolution NOT changed -- low confidence research, tilde paths work in shell context
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -67,14 +70,16 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 Plan 01 complete: 4 nick-prefixed skill directories with 13 agent/skill files (17min)
 - 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
 - 2026-02-16 Phase 05 Plan 03 complete: installed nick-prefixed skills, deleted all 26 gsd-prefixed files, user-verified (75min)
+- 2026-02-16 Phase 06 Plan 01 complete: fixed 34 gsd-tools.js references to gsd-tools.cjs across 9 skill files (2min)
 
 ## Accumulated Context
 
 ### Roadmap Evolution
 - Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
+- Phase 6 added: Fix nick skill paths — use nick: commands in flow recommendations, fix gsd-tools.cjs path and @-reference resolution
 
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Phase 5 complete, all 5 phases done — milestone ready
+**Stopped at:** Completed 06-01-PLAN.md
 **Timestamp:** 2026-02-16
