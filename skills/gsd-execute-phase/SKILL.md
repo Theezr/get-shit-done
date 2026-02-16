@@ -14,6 +14,8 @@ allowed-tools:
   - Grep
   - Bash
   - Task
+  - mcp__context7__resolve-library-id
+  - mcp__context7__query-docs
 ---
 
 # Execute Phase
@@ -66,7 +68,12 @@ Task(
 
   <objective>
   Execute plan {plan_id} of phase {phase_number}-{phase_name}.
-  Commit each task atomically. Create SUMMARY.md. Update STATE.md.
+
+  BEFORE implementing each task:
+  1. Verify the plan's API references via Context7 (check RESEARCH.md first)
+  2. Load relevant best-practice skills for the technology being used
+
+  Commit each task atomically. Create SUMMARY.md (include skills-loaded). Update STATE.md.
   </objective>
 
   <execution_context>
@@ -79,14 +86,17 @@ Task(
 
   <files_to_read>
   - Plan: {phase_dir}/{plan_file}
+  - Research: {phase_dir}/*-RESEARCH.md (if exists -- check for pre-verified APIs)
   - State: .planning/STATE.md
   - Config: .planning/config.json (if exists)
   </files_to_read>
 
   <success_criteria>
+  - [ ] API references verified via Context7 before implementation (or confirmed in RESEARCH.md)
+  - [ ] Relevant best-practice skills loaded before writing code
   - [ ] All tasks executed
   - [ ] Each task committed individually
-  - [ ] SUMMARY.md created in plan directory
+  - [ ] SUMMARY.md created with skills-loaded field
   - [ ] STATE.md updated with position and decisions
   </success_criteria>",
   subagent_type="general-purpose"
