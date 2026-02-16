@@ -37,6 +37,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 04-03: Checkpoint + auth gates + continuation grouped in one conditional file (all relate to non-autonomous flow)
 - Phase 04-03: TDD kept as separate conditional file (orthogonal to checkpoint flow)
 - Phase 04-03: Global ~/.claude/agents/ sync deferred (sandbox restriction) -- repo source of truth
+- Phase 05-01: Preserved gsd-tools.js, /gsd: commands, get-shit-done paths as package-level references during skill rename
+- Phase 05-01: Sub-protocol files (executor-checkpoints, executor-tdd) maintain no-frontmatter structure matching originals
 - Phase 05-02: Created nick-prefixed copies in both repo (agents/, hooks/) and installed location (~/.claude/) for version control
 - Phase 05-02: Preserved all package-managed references: gsd-tools.js, /gsd: commands, get-shit-done paths, gsd-file-manifest.json
 
@@ -60,6 +62,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 04 Plan 03 complete: conditional prompt loading -- executor split into core+checkpoints+TDD, orchestrator conditional refs (5min)
 
 - 2026-02-16 Phase 04 verified: 17/17 must-haves passed, phase complete
+- 2026-02-16 Phase 05 Plan 01 complete: 4 nick-prefixed skill directories with 13 agent/skill files (17min)
 - 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
 
 ## Accumulated Context
@@ -68,5 +71,5 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
 
 ## Last Session
-**Stopped at:** Completed 05-02-PLAN.md
+**Stopped at:** Completed 05-01-PLAN.md and 05-02-PLAN.md
 **Timestamp:** 2026-02-16
