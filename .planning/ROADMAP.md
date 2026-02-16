@@ -135,16 +135,19 @@ Plans:
 
 *Note: PIPE-01 through PIPE-06 total 6 requirements but only 19 unique v1 requirements exist. PIPE-02, PIPE-03, and PIPE-06 are naturally addressed in Phase 1 as part of the skills conversion (allowed-tools in frontmatter enforces role separation). PIPE-01, PIPE-04, and PIPE-05 require the verify and review skills from Phase 3 to be fully realized.*
 
-### Phase 5: Convert commands, agents, and skills from gsd- to nick- prefix
+### Phase 5: Convert commands, agents, and skills from gsd- to nick- prefix ✓
+
+**Status:** Complete (2026-02-16)
+**Verified:** 16/16 must-haves passed
 
 **Goal:** Rename all user-owned skills, agents, and hooks from gsd- to nick- prefix. Package-managed files (/gsd: commands, gsd-tools.js, workflows) remain unchanged.
 **Depends on:** Phase 4
 **Plans:** 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Rename repo skill directories and files from gsd- to nick- prefix with content updates
-- [ ] 05-02-PLAN.md -- Rename global agents and hooks from gsd- to nick- prefix, update settings.json
-- [ ] 05-03-PLAN.md -- Install nick-prefixed skills, delete old gsd- files, verify in Claude Code
+- [x] 05-01-PLAN.md -- Rename repo skill directories and files from gsd- to nick- prefix with content updates
+- [x] 05-02-PLAN.md -- Rename global agents and hooks from gsd- to nick- prefix, update settings.json
+- [x] 05-03-PLAN.md -- Install nick-prefixed skills, delete old gsd- files, verify in Claude Code
 
 ---
 *Roadmap created: 2026-02-15*
