@@ -838,6 +838,57 @@ function cmdPhasesList(cwd, options, raw) {
   }
 }
 
+function cmdRequirementsGetPhase(cwd, phaseNum, raw) {
+  if (!phaseNum) {
+    error('phase number required');
+  }
+
+  const reqPath = path.join(cwd, '.planning', 'REQUIREMENTS.md');
+
+  if (!fs.existsSync(reqPath)) {
+    output({ found: false, error: 'REQUIREMENTS.md not found' }, raw, '');
+    return;
+  }
+
+  try {
+    const content = fs.readFileSync(reqPath, 'utf-8');
+
+    // Parse the Traceability table: | Requirement | Phase | Status |
+    // Match rows like: | TOKEN-04 | Phase 4 | Pending |
+    const tracePattern = /\|\s*([A-Z]+-\d+)\s*\|\s*Phase\s+(\d+)\s*\|\s*(\w+)\s*\|/g;
+    const requirements = [];
+    let match;
+
+    while ((match = tracePattern.exec(content)) !== null) {
+      const [, reqId, phase, status] = match;
+      // Normalize: "4" matches phaseNum "4", "04" matches "4", etc.
+      if (parseInt(phase, 10) === parseInt(phaseNum, 10)) {
+        // Find description from ## v1 Requirements section
+        // Pattern: **REQ-ID**: description text
+        const descPattern = new RegExp(`\\*\\*${reqId}\\*\\*:\\s*(.+?)(?:\\n|$)`);
+        const descMatch = content.match(descPattern);
+        const description = descMatch ? descMatch[1].trim() : null;
+
+        requirements.push({
+          id: reqId,
+          phase: `Phase ${phase}`,
+          status,
+          description,
+        });
+      }
+    }
+
+    output({
+      found: requirements.length > 0,
+      phase: phaseNum,
+      count: requirements.length,
+      requirements,
+    }, raw);
+  } catch (e) {
+    error('Failed to read REQUIREMENTS.md: ' + e.message);
+  }
+}
+
 function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
   const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
 
@@ -4655,6 +4706,16 @@ async function main() {
         cmdPhasesList(cwd, options, raw);
       } else {
         error('Unknown phases subcommand. Available: list');
+      }
+      break;
+    }
+
+    case 'requirements': {
+      const subcommand = args[1];
+      if (subcommand === 'get-phase') {
+        cmdRequirementsGetPhase(cwd, args[2], raw);
+      } else {
+        error('Unknown requirements subcommand. Available: get-phase');
       }
       break;
     }
