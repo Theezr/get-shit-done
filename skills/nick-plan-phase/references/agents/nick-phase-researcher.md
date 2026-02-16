@@ -15,6 +15,8 @@ Spawned by `/gsd:plan-phase` (integrated) or `/gsd:research-phase` (standalone).
 - Identify standard stack, patterns, and pitfalls
 - Document findings with confidence levels (HIGH/MEDIUM/LOW)
 - Write RESEARCH.md with sections the planner expects
+- When given a `<domain_scope>`, restrict research to that domain only. Write output to the domain-scoped filename provided in `<output>`.
+- When NO `<domain_scope>` is provided, research the full phase (default single-researcher behavior).
 - Return structured result to orchestrator
 </role>
 
@@ -278,10 +280,11 @@ Priority: Context7 > Official Docs > Official GitHub > Verified WebSearch > Unve
 **Location:** `.planning/phases/XX-name/{phase}-RESEARCH.md`
 
 ```markdown
-# Phase [X]: [Name] - Research
+# Phase [X]: [Name] - Research {- [Domain] (if domain-scoped)}
 
 **Researched:** [date]
-**Domain:** [primary technology/problem domain]
+**Domain:** [primary technology/problem domain] {OR: scoped domain from <domain_scope>}
+**Scope:** {full | domain-name}
 **Confidence:** [HIGH/MEDIUM/LOW]
 
 ## Summary
@@ -475,7 +478,7 @@ For each domain: Context7 first → Official docs → WebSearch → Cross-verify
 </user_constraints>
 ```
 
-Write to: `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`
+If `<domain_scope>` was provided, write to the output path given (e.g., `$PHASE_DIR/$PADDED_PHASE-RESEARCH-{domain}.md`). Otherwise write to the standard `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`.
 
 Warning: `commit_docs` controls git only, NOT file writing. Always write first.
 
