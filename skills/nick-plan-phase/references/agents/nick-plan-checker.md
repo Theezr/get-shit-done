@@ -292,6 +292,34 @@ issue:
   fix_hint: "Remove search task - belongs in future phase per user decision"
 ```
 
+## Dimension 8: Prototype Consistency
+
+**Question:** Do frontend plans have prototypes, and do prototypes align with plan intent?
+
+**Only check for plans where `has_frontend: true` in frontmatter.**
+
+**Process:**
+1. Check if `has_frontend` field exists in plan frontmatter
+2. If `has_frontend: true`: verify `prototype` field references a file, and that file path follows the naming convention `{phase}-{plan}-PROTOTYPE.html`
+3. If `has_frontend: false` or absent: verify NO prototype field is set (avoid orphaned references)
+4. If prototype is referenced, check the prototype file exists in the phase directory
+
+**Red flags:**
+- `has_frontend: true` but no `prototype` field (visual spec missing for frontend plan)
+- `prototype` field set but `has_frontend` is false or absent (contradictory metadata)
+- Prototype filename does not match naming convention
+- `files_modified` contains .tsx/.jsx/.html/.css files but `has_frontend` is not true (planner may have missed detection)
+
+**Example issue:**
+```yaml
+issue:
+  dimension: prototype_consistency
+  severity: warning
+  description: "Plan 01 has has_frontend: true but no prototype field"
+  plan: "01"
+  fix_hint: "Add prototype: 07-01-PROTOTYPE.html and create the prototype file"
+```
+
 </verification_dimensions>
 
 <verification_process>
@@ -616,6 +644,7 @@ Plan verification complete when:
   - [ ] Locked decisions have implementing tasks
   - [ ] No tasks contradict locked decisions
   - [ ] Deferred ideas not included in plans
+- [ ] Prototype consistency checked (frontend plans have prototypes)
 - [ ] Overall status determined (passed | issues_found)
 - [ ] Structured issues returned (if any found)
 - [ ] Result returned to orchestrator
