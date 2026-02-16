@@ -38,7 +38,6 @@ Read from the phase directory to build review context:
 
 - Read all `*-SUMMARY.md` files to identify ALL files created/modified (key-files sections)
 - Read all `*-PLAN.md` files for plan adherence checking
-- Read `*-RUNTIME-VERIFICATION.md` if it exists (include runtime findings in review context)
 
 If no SUMMARY.md files found: Error -- "No execution summaries found. Run `/gsd:execute-phase` first."
 
@@ -59,7 +58,6 @@ Task(
   <files_to_read>
   - {phase_dir}/*-SUMMARY.md (all summaries -- identify files to review)
   - {phase_dir}/*-PLAN.md (all plans -- check plan adherence)
-  - {phase_dir}/*-RUNTIME-VERIFICATION.md (if exists -- include runtime findings)
   </files_to_read>
 
   <output>Create {phase_dir}/{padded_phase}-REVIEW.md</output>",
@@ -84,7 +82,7 @@ If REVIEW.md does not exist: Error -- "Code reviewer did not produce REVIEW.md."
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit \
   "docs(phase-{X}): review PASSED -- code quality verified" \
-  --files {phase_dir}/{padded_phase}-REVIEW.md {phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md
+  --files {phase_dir}/{padded_phase}-REVIEW.md
 ```
 
 - Display: "Review PASSED. Phase {X} review artifacts committed."
