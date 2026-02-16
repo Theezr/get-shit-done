@@ -90,6 +90,13 @@ Plans:
 3. `gsd-tools.js` supports phase-specific extraction (e.g., `requirements get-phase 3` returns only that phase's requirements, `roadmap get-phase 3 --format section` returns only that section)
 4. Agent prompts split into core + conditional sections: TDD execution, checkpoint protocol, auth gates loaded only when the plan requires them (not on every invocation)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 04-01-PLAN.md -- Add phase-specific extraction to gsd-tools.js (requirements get-phase, roadmap --format, plan index type)
+- [ ] 04-02-PLAN.md -- Add MCP degradation to all agent definitions + RESEARCH.md-first consistency in planner
+- [ ] 04-03-PLAN.md -- Split executor into core + checkpoints + TDD, conditional loading in orchestrator
+
 ---
 
 ## Coverage
