@@ -48,7 +48,7 @@ Check `branching_strategy` from init:
 PLAN_INDEX=$(node ~/.claude/get-shit-done/bin/gsd-tools.js phase-plan-index "$PHASE_NUMBER")
 ```
 
-Parse: `plans[]` (each with `id`, `wave`, `autonomous`, `objective`, `has_summary`), `waves`, `incomplete`.
+Parse: `plans[]` (each with `id`, `wave`, `autonomous`, `type`, `objective`, `has_summary`), `waves`, `incomplete`.
 
 **Filtering:** Skip plans where `has_summary: true`. If `--gaps-only`: skip non-gap_closure plans. If all filtered: exit.
 
@@ -80,9 +80,13 @@ Task(
   Read these workflow files for execution instructions:
   @~/.claude/get-shit-done/workflows/execute-plan.md
   @~/.claude/get-shit-done/templates/summary.md
-  @~/.claude/get-shit-done/references/checkpoints.md
-  @~/.claude/get-shit-done/references/tdd.md
   </execution_context>
+
+  **Conditional references (include in execution_context based on plan frontmatter):**
+  - If the plan's `autonomous` is `false`: Add this line to execution_context:
+    `@~/.claude/skills/gsd-execute-phase/references/agents/gsd-executor-checkpoints.md`
+  - If the plan's `type` is `tdd`: Add this line to execution_context:
+    `@~/.claude/skills/gsd-execute-phase/references/agents/gsd-executor-tdd.md`
 
   <files_to_read>
   - Plan: {phase_dir}/{plan_file}
@@ -114,7 +118,7 @@ If spot-check fails: ask user to retry or continue.
 
 **classifyHandoffIfNeeded bug:** If agent reports "failed" with `classifyHandoffIfNeeded is not defined`, this is a Claude Code bug. Run spot-checks -- if PASS, treat as successful.
 
-**4e. Handle checkpoint plans** (`autonomous: false`): Agent returns structured state. Present to user. Spawn fresh continuation agent with completed tasks table and resume point.
+**4e. Handle checkpoint plans** (`autonomous: false`): Agent returns structured state. Present to user. Spawn fresh continuation agent with completed tasks table and resume point. **IMPORTANT:** The continuation agent's execution_context MUST include gsd-executor-checkpoints.md -- continuation handling is in that file.
 
 **4f. Proceed to next wave.**
 
