@@ -1,14 +1,14 @@
 # Project State
 
 ## Current Position
-**Phase:** 06-fix-nick-skill-paths-use-nick-commands-in-flow-recommendations-fix-gsd-tools-cjs-path-and-relative-reference-resolution
-**Current Plan:** Not started
-**Status:** Milestone complete
+**Phase:** 07-prototype-driven-design-in-plan-phase-and-mandatory-frontend-verification-after-execution
+**Current Plan:** 02 of 2 complete
+**Status:** Executing
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 6 executing -- fix gsd-tools.cjs paths in nick skills
+**Current focus:** Phase 7 executing -- prototype-driven design + auto frontend verification
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -46,6 +46,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 06-01: Literal string replacement only -- no context-dependent or structural changes needed
 - Phase 06-01: /gsd: command recommendations NOT changed -- confirmed /gsd: commands exist as package-managed slash commands
 - Phase 06-01: @-reference resolution NOT changed -- low confidence research, tilde paths work in shell context
+- Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML
+- Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5
+- Phase 07-02: Inconclusive outcome continues execution with manual verification suggestion
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -71,15 +74,17 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
 - 2026-02-16 Phase 05 Plan 03 complete: installed nick-prefixed skills, deleted all 26 gsd-prefixed files, user-verified (75min)
 - 2026-02-16 Phase 06 Plan 01 complete: fixed 34 gsd-tools.js references to gsd-tools.cjs across 9 skill files (2min)
+- 2026-02-16 Phase 07 Plan 02 complete: prototype-guided execution + auto-verify frontend in orchestrator (2min)
 
 ## Accumulated Context
 
 ### Roadmap Evolution
 - Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
 - Phase 6 added: Fix nick skill paths — use nick: commands in flow recommendations, fix gsd-tools.cjs path and @-reference resolution
+- Phase 7 added: Prototype-driven design in plan phase and mandatory frontend verification after execution
 
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed 06-01-PLAN.md
+**Stopped at:** Completed 07-02-PLAN.md
 **Timestamp:** 2026-02-16
