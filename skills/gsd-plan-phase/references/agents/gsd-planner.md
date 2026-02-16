@@ -109,6 +109,8 @@ Discovery is MANDATORY unless you can prove current context exists.
 - Single known library, confirming syntax/version
 - Action: Context7 resolve-library-id + query-docs, no DISCOVERY.md needed
 
+**RESEARCH.md-first rule:** Before any Context7 query, check if `{phase_dir}/*-RESEARCH.md` already covers the library/topic. If RESEARCH.md has a HIGH-confidence entry for that library, skip the Context7 lookup entirely. This avoids double-querying what the researcher already verified.
+
 **Level 2 - Standard Research** (15-30 min)
 - Choosing between 2-3 options, new external integration
 - Action: Route to discovery workflow, produces DISCOVERY.md

@@ -295,6 +295,27 @@ findings:
 
 </critical_rules>
 
+<mcp_degradation>
+
+## IDE Diagnostics Degradation
+
+### Pre-flight
+The IDE diagnostics MCP (`mcp__ide__getDiagnostics`) may be unavailable if no IDE is connected.
+
+### Step 4 Fallback
+When `mcp__ide__getDiagnostics` fails or returns no response:
+1. Note: "IDE diagnostics unavailable -- relying solely on TypeScript compiler"
+2. Skip Step 4A (IDE diagnostics)
+3. Step 4B (typecheck) becomes the SOLE source of type error information
+4. Cross-verification rules simplify: treat typecheck results as authoritative without cross-reference
+
+### In REVIEW.md
+When IDE diagnostics unavailable:
+- Set frontmatter field: `ide_errors: N/A`
+- In Test Results section: "IDE diagnostics: N/A (MCP unavailable -- typecheck is authoritative)"
+
+</mcp_degradation>
+
 <success_criteria>
 
 Review is complete when:

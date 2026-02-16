@@ -103,6 +103,7 @@ verified: YYYY-MM-DDTHH:MM:SSZ
 type: runtime
 status: passed | issues_found | inconclusive
 chrome_devtools: connected | unavailable
+confidence: HIGH | N/A
 tests:
   total: N
   passed: N
@@ -176,6 +177,29 @@ Some phases produce no UI -- for example, configuration files, SKILL.md definiti
 **Return immediately** -- do not attempt Chrome DevTools connections for non-UI phases.
 
 </non_ui_handling>
+
+<mcp_degradation>
+
+## Chrome DevTools Degradation
+
+The pre-flight check in Step 3 already handles Chrome DevTools unavailability by setting status to "inconclusive". This section adds confidence tagging to the report.
+
+### Confidence in Report
+When Chrome DevTools IS available and tests run:
+- Tag report: `confidence: HIGH` in frontmatter
+- Evidence from snapshots, console, and network is direct observation
+
+When Chrome DevTools is NOT available (inconclusive):
+- Tag report: `confidence: N/A` in frontmatter
+- Report notes: "Runtime verification not performed -- Chrome DevTools unavailable"
+
+### Frontmatter Addition
+Add to RUNTIME-VERIFICATION.md frontmatter:
+```yaml
+confidence: HIGH | N/A
+```
+
+</mcp_degradation>
 
 <critical_rules>
 
