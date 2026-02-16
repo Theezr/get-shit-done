@@ -8,7 +8,7 @@
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 4 - MCP degradation complete, ready for Plan 03
+**Current focus:** Phase 4 - Plans 01+02 complete, only Plan 03 (conditional prompt loading) remains
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -32,6 +32,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 04-02: Pre-flight MCP checks run ONCE at session start, not before every call
 - Phase 04-02: Mid-session MCP failures assume down for rest of session (no retries)
 - Phase 04-02: Browser-tester confidence uses binary HIGH/N/A (DevTools either runs tests or doesn't)
+- Phase 04-01: Used parseInt normalization so phase '4' matches '04' in requirements get-phase
+- Phase 04-01: Section format uses process.stdout.write + process.exit for raw output (bypasses JSON wrapper)
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -49,7 +51,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 03 Plan 02 complete: gsd-review skill with commit-on-PASS gate + code-reviewer agent (5min)
 - 2026-02-16 Phase 03 verified: 11/11 must-haves passed, phase complete
 - 2026-02-16 Phase 04 Plan 02 complete: MCP degradation in all 4 agent types + RESEARCH.md-first in planner (3min)
+- 2026-02-16 Phase 04 Plan 01 complete: gsd-tools.js phase-specific extraction -- requirements get-phase, roadmap --format, plan index type (4min)
 
 ## Last Session
-**Stopped at:** Completed 04-02-PLAN.md
+**Stopped at:** Completed 04-01-PLAN.md
 **Timestamp:** 2026-02-16
