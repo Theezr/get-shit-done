@@ -1,14 +1,14 @@
 # Project State
 
 ## Current Position
-**Phase:** 07-prototype-driven-design-in-plan-phase-and-mandatory-frontend-verification-after-execution
-**Current Plan:** Not started
-**Status:** Milestone complete
+**Phase:** 08-combine-review-and-verify-work-skills-into-parallel-execution
+**Current Plan:** 1 of 1
+**Status:** Plan 01 complete
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 7 executing -- prototype-driven design + auto frontend verification
+**Current focus:** Phase 8 executing -- parallel verify + review in execute-phase pipeline
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -52,6 +52,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML
 - Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5
 - Phase 07-02: Inconclusive outcome continues execution with manual verification suggestion
+- Phase 08-01: Spawn code-reviewer agent directly (not review skill orchestrator) to avoid nested orchestration and double commits
+- Phase 08-01: Review skill retains standalone commit-on-PASS for /gsd:review; orchestrator overrides via DO NOT COMMIT prompt
+- Phase 08-01: Non-frontend phases skip verify-work entirely, run review only
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -79,6 +82,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 06 Plan 01 complete: fixed 34 gsd-tools.js references to gsd-tools.cjs across 9 skill files (2min)
 - 2026-02-16 Phase 07 Plan 01 complete: planner prototype creation + plan checker consistency dimension (2min)
 - 2026-02-16 Phase 07 Plan 02 complete: prototype-guided execution + auto-verify frontend in orchestrator (2min)
+- 2026-02-16 Phase 08 Plan 01 complete: parallel verify + review in execute-phase Step 4.5 with result matrix (2min)
 
 ## Accumulated Context
 
@@ -86,9 +90,10 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
 - Phase 6 added: Fix nick skill paths — use nick: commands in flow recommendations, fix gsd-tools.cjs path and @-reference resolution
 - Phase 7 added: Prototype-driven design in plan phase and mandatory frontend verification after execution
+- Phase 8 added: Combine review and verify-work skills into parallel execution
 
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed 07-02-PLAN.md
+**Stopped at:** Completed 08-01-PLAN.md
 **Timestamp:** 2026-02-16
