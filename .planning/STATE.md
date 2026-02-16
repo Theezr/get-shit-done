@@ -8,7 +8,7 @@
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 8 executing -- parallel verify + review in execute-phase pipeline
+**Current focus:** Milestone complete -- quick tasks for refinements
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -50,11 +50,12 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 07-01: has_frontend is optional frontmatter field (default false) set by planner, not derived at runtime
 - Phase 07-01: Prototype consistency is a warning-level validation dimension, not a blocker
 - Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML
-- Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5
+- Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5 (SUPERSEDED by Quick-2: removed auto verify+review from execute-phase)
 - Phase 07-02: Inconclusive outcome continues execution with manual verification suggestion
-- Phase 08-01: Spawn code-reviewer agent directly (not review skill orchestrator) to avoid nested orchestration and double commits
+- Phase 08-01: Spawn code-reviewer agent directly (not review skill orchestrator) to avoid nested orchestration and double commits (SUPERSEDED by Quick-2: auto-spawning removed, review is manual)
 - Phase 08-01: Review skill retains standalone commit-on-PASS for /gsd:review; orchestrator overrides via DO NOT COMMIT prompt
-- Phase 08-01: Non-frontend phases skip verify-work entirely, run review only
+- Phase 08-01: Non-frontend phases skip verify-work entirely, run review only (SUPERSEDED by Quick-2: all verify/review is manual)
+- Quick-2: Keep Phase 8 review decoupling (nick-review/SKILL.md DO NOT COMMIT pattern) -- only revert the auto-spawning in execute-phase
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -84,6 +85,14 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 07 Plan 02 complete: prototype-guided execution + auto-verify frontend in orchestrator (2min)
 - 2026-02-16 Phase 08 Plan 01 complete: parallel verify + review in execute-phase Step 4.5 with result matrix (2min)
 - 2026-02-16 Quick Task 1 complete: removed RESEARCH.md-first skip pattern, Context7 always-verify in planner+executor (7min)
+- 2026-02-16 Quick Task 2 complete: removed auto verify+review (Step 4.5) from execute-phase, manual invocation via Step 7 (1min)
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Make nick-plan-phase and nick-execute-phase use Context7 more proactively | 2026-02-16 | 29fce29 | [1-make-nick-plan-phase-and-nick-execute-ph](./quick/1-make-nick-plan-phase-and-nick-execute-ph/) |
+| 2 | Revert Phase 8 auto verify+review from execute-phase | 2026-02-16 | 2c5b1aa | [2-revert-phase-8-remove-auto-verify-review](./quick/2-revert-phase-8-remove-auto-verify-review/) |
 
 ## Accumulated Context
 
@@ -96,5 +105,5 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed Quick Task 1 (Context7-always in planner+executor)
+**Stopped at:** Completed Quick Task 2 (reverted auto verify+review from execute-phase)
 **Timestamp:** 2026-02-16
