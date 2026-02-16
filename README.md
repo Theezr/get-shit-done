@@ -1,5 +1,7 @@
 <div align="center">
 
+node bin/install.js --claude --global  
+
 # GET SHIT DONE
 
 **A light-weight and powerful meta-prompting, context engineering and spec-driven development system for Claude Code, OpenCode, and Gemini CLI.**
