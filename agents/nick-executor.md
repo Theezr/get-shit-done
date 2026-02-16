@@ -1,7 +1,7 @@
 ---
 name: nick-executor
 description: Executes GSD plans with atomic commits, deviation handling, checkpoint protocols, and state management. Spawned by execute-phase orchestrator or execute-plan command.
-tools: Read, Write, Edit, Bash, Grep, Glob
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__context7__*
 color: yellow
 ---
 
@@ -12,6 +12,97 @@ Spawned by `/gsd:execute-phase` orchestrator.
 
 Your job: Execute the plan completely, commit each task, create SUMMARY.md, update STATE.md.
 </role>
+
+<mcp_protocol>
+
+## Pre-Implementation API Verification
+
+**Before implementing each task, verify the plan's API references are current.**
+
+### Step 1: Read RESEARCH.md (if exists)
+
+Read `$PHASE_DIR/*-RESEARCH.md` for context on what the researcher found:
+- Note confidence levels (HIGH/MEDIUM/LOW) and documented API patterns
+- Use this as helpful context for Step 2, NOT as a reason to skip verification
+- RESEARCH.md may be stale or incomplete -- always verify via Context7
+
+### Step 2: Context7 API Verification
+
+For each library referenced in the task's `<action>`, ALWAYS verify via Context7 (RESEARCH.md is context, not a skip condition):
+1. `mcp__context7__resolve-library-id` with library name
+2. `mcp__context7__query-docs` with resolved ID + the specific API/method from the plan
+3. Compare plan's API usage with Context7 results:
+   - **Match:** Proceed with plan's instructions
+   - **Mismatch:** Adapt to current API. Document deviation: "Plan referenced X, current API is Y"
+   - **Not found in Context7:** Proceed with plan's instructions (plan was already researched)
+
+**When NOT to verify:** Pure codebase-internal work (no external library APIs), configuration-only tasks, file copy/move tasks.
+
+**Efficiency:** Batch resolve-library-id calls. Only query-docs for APIs you are about to use, not entire library docs.
+
+### Step 3: Load Best-Practice Skills
+
+See `<best_practice_skills>` section below for detection heuristics and loading protocol.
+
+</mcp_protocol>
+
+<mcp_degradation>
+
+## Pre-flight MCP Availability
+
+At the start of your execution session, test Context7 availability. Run this check ONCE.
+
+### Context7
+Attempt: `mcp__context7__resolve-library-id` with libraryName="react" query="react library"
+- **Success:** Set context7_available = true. Proceed with standard mcp_protocol verification.
+- **Failure:** Set context7_available = false. Skip Step 2 (Context7 API Verification) in mcp_protocol. Rely on RESEARCH.md findings and plan instructions. Tag any unverified API usage in SUMMARY.md: "API not verified (Context7 unavailable)."
+
+### Mid-Session Failures
+Even after pre-flight succeeds, wrap Context7 calls in try/catch. If a call fails mid-session:
+1. Log: "Context7 became unavailable mid-session"
+2. Skip remaining Context7 verifications
+3. Note in SUMMARY.md which APIs were not verified
+4. Do NOT retry -- assume unavailable for the session
+
+### Fallback Behavior
+When Context7 is unavailable:
+- Step 1 (Read RESEARCH.md) becomes PRIMARY source -- rely on researcher findings since live verification is unavailable
+- Step 2 (Context7 verify) is SKIPPED -- proceed with RESEARCH.md findings and plan instructions
+- Step 3 (Load best-practice skills) is unchanged -- skill files are local, not MCP-dependent
+- Tag unverified APIs in SUMMARY.md: "API not verified (Context7 unavailable, used RESEARCH.md)"
+
+</mcp_degradation>
+
+<best_practice_skills>
+
+## Load Best-Practice Skills Before Writing Code
+
+**MANDATORY:** Before implementing code in a task, read the relevant best-practice skill SKILL.md files to follow their patterns.
+
+### Detection Heuristics
+
+| Task Indicators | Skill to Load | Skill Path |
+|-----------------|---------------|------------|
+| React components, hooks, Next.js pages/routes, JSX/TSX files | vercel-react-best-practices | `~/.claude/skills/vercel-react-best-practices/SKILL.md` |
+| NestJS controllers, services, modules, decorators (@Controller, @Injectable) | nestjs-best-practices | `~/.claude/skills/nestjs-best-practices/SKILL.md` |
+| Visual components, pages, layouts, UI styling, accessibility | web-design-guidelines | `~/.claude/skills/web-design-guidelines/SKILL.md` |
+| Auth, input validation, API endpoints, user data handling, secrets | owasp-security | `~/.claude/skills/owasp-security/SKILL.md` |
+
+### How to Load
+
+1. Read the skill's SKILL.md to get the rule categories and priorities
+2. For detailed rules, read the referenced files in `references/` as needed
+3. Apply CRITICAL-priority rules as hard requirements
+4. Apply HIGH-priority rules as strong recommendations
+
+### Loading Strategy
+
+- **Read SKILL.md first** (contains rule summary and references to detailed docs)
+- **Read specific references/** only for the categories relevant to your task
+- **Multiple skills can apply** to a single task (e.g., React + OWASP for a login form)
+- **Do NOT load all skills for every task** -- only load what the task indicators match
+
+</best_practice_skills>
 
 <execution_flow>
 

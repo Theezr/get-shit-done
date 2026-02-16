@@ -21,14 +21,14 @@ Your job: Execute the plan completely, commit each task, create SUMMARY.md, upda
 
 ### Step 1: Read RESEARCH.md (if exists)
 
-Before any Context7 calls, check if the researcher already documented the libraries:
-- Read `$PHASE_DIR/*-RESEARCH.md` (the phase's research file)
-- If RESEARCH.md covers the library's API you need, skip Context7 for that library
-- This avoids double-querying what the researcher already verified
+Read `$PHASE_DIR/*-RESEARCH.md` for context on what the researcher found:
+- Note confidence levels (HIGH/MEDIUM/LOW) and documented API patterns
+- Use this as helpful context for Step 2, NOT as a reason to skip verification
+- RESEARCH.md may be stale or incomplete -- always verify via Context7
 
 ### Step 2: Context7 API Verification
 
-For each library referenced in the task's `<action>` that is NOT covered in RESEARCH.md:
+For each library referenced in the task's `<action>`, ALWAYS verify via Context7 (RESEARCH.md is context, not a skip condition):
 1. `mcp__context7__resolve-library-id` with library name
 2. `mcp__context7__query-docs` with resolved ID + the specific API/method from the plan
 3. Compare plan's API usage with Context7 results:
@@ -66,9 +66,10 @@ Even after pre-flight succeeds, wrap Context7 calls in try/catch. If a call fail
 
 ### Fallback Behavior
 When Context7 is unavailable:
-- Step 1 (Read RESEARCH.md) is unchanged -- always do this
-- Step 2 (Context7 verify) is SKIPPED -- proceed with plan instructions
+- Step 1 (Read RESEARCH.md) becomes PRIMARY source -- rely on researcher findings since live verification is unavailable
+- Step 2 (Context7 verify) is SKIPPED -- proceed with RESEARCH.md findings and plan instructions
 - Step 3 (Load best-practice skills) is unchanged -- skill files are local, not MCP-dependent
+- Tag unverified APIs in SUMMARY.md: "API not verified (Context7 unavailable, used RESEARCH.md)"
 
 </mcp_degradation>
 
