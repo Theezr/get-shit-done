@@ -211,6 +211,22 @@ For each external service, determine:
 
 Record in `user_setup` frontmatter. Only include what Claude literally cannot do. Do NOT surface in planning output — execute-plan handles presentation.
 
+## Frontend Detection
+
+For each plan, determine `has_frontend`:
+
+**has_frontend = true** if ANY of:
+- `files_modified` contains .tsx, .jsx, .html, .css, .scss files
+- `files_modified` contains paths matching: `src/app/**/page.tsx`, `src/components/**`, `pages/**`
+- Tasks involve UI components, layouts, pages, or visual styling
+- Objective mentions "UI", "page", "component", "form", "dashboard", "layout"
+
+**has_frontend = false** if:
+- All files are .ts, .js, .json, .md, .yml, .yaml
+- Work is pure backend, CLI, config, documentation, or infrastructure
+
+**Self-check:** If `files_modified` contains .tsx/.jsx/.html files, `has_frontend` SHOULD be true. The planner can override (e.g., a .tsx server-only component) but must be intentional.
+
 </task_breakdown>
 
 <dependency_graph>
@@ -347,6 +363,8 @@ wave: N                     # Execution wave (1, 2, 3...)
 depends_on: []              # Plan IDs this plan requires
 files_modified: []          # Files this plan touches
 autonomous: true            # false if plan has checkpoints
+has_frontend: false          # true if plan involves UI/visual files
+prototype: XX-NN-PROTOTYPE.html  # only if has_frontend: true
 user_setup: []              # Human-required setup (omit if empty)
 
 must_haves:
@@ -412,6 +430,8 @@ After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`
 | `depends_on` | Yes | Plan IDs this plan requires |
 | `files_modified` | Yes | Files this plan touches |
 | `autonomous` | Yes | `true` if no checkpoints |
+| `has_frontend` | No | `true` if plan modifies .tsx/.jsx/.html/.css/.scss files or UI routes |
+| `prototype` | No | Prototype filename (only when `has_frontend: true`) |
 | `user_setup` | No | Human-required setup items |
 | `must_haves` | Yes | Goal-backward verification criteria |
 
@@ -676,6 +696,80 @@ Each TDD plan produces 2-3 atomic commits.
 TDD plans target ~40% context (lower than standard 50%). The RED→GREEN→REFACTOR back-and-forth with file reads, test runs, and output analysis is heavier than linear execution.
 
 </tdd_integration>
+
+<prototype_creation>
+
+## When to Create Prototypes
+
+Create a prototype for any plan where `has_frontend: true`. This includes plans that create or modify .tsx, .jsx, .html, .css, .scss files, or that involve UI routes, pages, components, layouts, or visual styling.
+
+Plans without frontend work (`has_frontend: false` or absent) skip prototype creation entirely.
+
+## File Naming
+
+Prototype files live alongside the PLAN.md in the phase directory:
+
+```
+.planning/phases/XX-name/
+  XX-01-PLAN.md
+  XX-01-PROTOTYPE.html    # Only if has_frontend: true
+  XX-02-PLAN.md           # No frontend work, no prototype
+```
+
+Naming convention: `{phase}-{plan}-PROTOTYPE.html`
+
+## Prototype Scope
+
+Each prototype shows ONE plan's visual output. Include:
+
+- **Layout structure:** Grid, flex, spacing, semantic HTML
+- **Component hierarchy:** What contains what, nesting structure
+- **Placeholder data:** Realistic fake content (not "Lorem ipsum")
+- **Interactive element states:** Buttons, inputs, empty states, loading states, error states
+- **Responsive breakpoints:** Desktop + mobile widths if relevant
+- **Design system tokens:** Colors and typography from project's design system (check for tailwind.config, theme files, CSS variables)
+
+## Prototype Exclusions
+
+Do NOT include in prototypes:
+
+- JavaScript behavior (no event handlers, no fetch calls)
+- Framework-specific code (no React, no Vue -- pure HTML/CSS only)
+- Backend integration (no real API calls)
+- Animations or transitions (describe in plan action text instead)
+
+## Size Constraint
+
+Cap prototypes at **~150 lines of HTML**. Spend **10-15% of planner context** on prototypes, not 30-40%.
+
+If a plan has many visual elements, create a simpler prototype showing layout structure rather than every detail. The prototype is a guide, not a pixel-perfect spec.
+
+## Prototype Template
+
+```html
+<!-- Prototype for Plan {phase}-{plan}: {objective} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{Plan Name} - Prototype</title>
+  <style>
+    /* Reset and base styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; }
+    /* Layout and component styles here */
+  </style>
+</head>
+<body>
+  <!-- Semantic markup showing component hierarchy -->
+</body>
+</html>
+```
+
+Include a comment header identifying the prototype: `<!-- Prototype for Plan {phase}-{plan}: {objective} -->`.
+
+</prototype_creation>
 
 <gap_closure_mode>
 
@@ -1001,6 +1095,9 @@ Present breakdown with wave structure. Wait for confirmation in interactive mode
 Use template structure for each PLAN.md.
 
 Write to `.planning/phases/XX-name/{phase}-{NN}-PLAN.md`
+
+If the plan has `has_frontend: true`, also create the prototype file:
+Write to `.planning/phases/XX-name/{phase}-{NN}-PROTOTYPE.html`
 
 Include all frontmatter fields.
 </step>
