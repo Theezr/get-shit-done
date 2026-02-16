@@ -1,14 +1,14 @@
 # Project State
 
 ## Current Position
-**Phase:** 03-verification-review-pipeline
-**Current Plan:** 2 of 2
-**Status:** Phase 3 verified and complete (11/11 must-haves passed)
+**Phase:** 04-resilience-optimization
+**Current Plan:** 2 of 3
+**Status:** Executing Phase 4
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 4
+**Current focus:** Phase 4 - MCP degradation complete, ready for Plan 03
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -29,6 +29,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 03-02: Review skill commits review/verification artifacts only, not executor code (executor per-task commits preserved per deferred PIPE-03)
 - Phase 03-02: No Edit tool in reviewer allowed-tools -- reviewer reports findings only, never modifies source
 - Phase 03-02: Belt-and-suspenders: IDE diagnostics as first check, typecheck as authoritative source when they disagree
+- Phase 04-02: Pre-flight MCP checks run ONCE at session start, not before every call
+- Phase 04-02: Mid-session MCP failures assume down for rest of session (no retries)
+- Phase 04-02: Browser-tester confidence uses binary HIGH/N/A (DevTools either runs tests or doesn't)
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -45,7 +48,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 03 Plan 01 complete: gsd-verify-work skill with Chrome DevTools runtime testing (3min)
 - 2026-02-16 Phase 03 Plan 02 complete: gsd-review skill with commit-on-PASS gate + code-reviewer agent (5min)
 - 2026-02-16 Phase 03 verified: 11/11 must-haves passed, phase complete
+- 2026-02-16 Phase 04 Plan 02 complete: MCP degradation in all 4 agent types + RESEARCH.md-first in planner (3min)
 
 ## Last Session
-**Stopped at:** Phase 3 complete, ready for Phase 4
+**Stopped at:** Completed 04-02-PLAN.md
 **Timestamp:** 2026-02-16
