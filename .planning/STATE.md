@@ -2,7 +2,7 @@
 
 ## Current Position
 **Phase:** 05-convert-commands-agents-and-skills-from-gsd-to-nick-prefix
-**Current Plan:** 2 of 3
+**Current Plan:** 3 of 3
 **Status:** Executing phase 5 plans
 
 ## Project Reference
@@ -41,6 +41,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 05-01: Sub-protocol files (executor-checkpoints, executor-tdd) maintain no-frontmatter structure matching originals
 - Phase 05-02: Created nick-prefixed copies in both repo (agents/, hooks/) and installed location (~/.claude/) for version control
 - Phase 05-02: Preserved all package-managed references: gsd-tools.js, /gsd: commands, get-shit-done paths, gsd-file-manifest.json
+- Phase 05-03: Installed nick-prefixed skills at ~/.claude/skills/ where Claude Code loads them
+- Phase 05-03: All 26 gsd-prefixed user files deleted after confirming nick-prefixed replacements exist
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -64,6 +66,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 04 verified: 17/17 must-haves passed, phase complete
 - 2026-02-16 Phase 05 Plan 01 complete: 4 nick-prefixed skill directories with 13 agent/skill files (17min)
 - 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
+- 2026-02-16 Phase 05 Plan 03 complete: installed nick-prefixed skills, deleted all 26 gsd-prefixed files, user-verified (75min)
 
 ## Accumulated Context
 
@@ -71,5 +74,5 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
 
 ## Last Session
-**Stopped at:** Completed 05-01-PLAN.md and 05-02-PLAN.md
+**Stopped at:** Completed 05-03-PLAN.md
 **Timestamp:** 2026-02-16
