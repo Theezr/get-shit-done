@@ -46,6 +46,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 06-01: Literal string replacement only -- no context-dependent or structural changes needed
 - Phase 06-01: /gsd: command recommendations NOT changed -- confirmed /gsd: commands exist as package-managed slash commands
 - Phase 06-01: @-reference resolution NOT changed -- low confidence research, tilde paths work in shell context
+- Phase 07-01: Prototypes are static HTML/CSS with 150-line cap and 10-15% context budget
+- Phase 07-01: has_frontend is optional frontmatter field (default false) set by planner, not derived at runtime
+- Phase 07-01: Prototype consistency is a warning-level validation dimension, not a blocker
 - Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML
 - Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5
 - Phase 07-02: Inconclusive outcome continues execution with manual verification suggestion
@@ -74,6 +77,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
 - 2026-02-16 Phase 05 Plan 03 complete: installed nick-prefixed skills, deleted all 26 gsd-prefixed files, user-verified (75min)
 - 2026-02-16 Phase 06 Plan 01 complete: fixed 34 gsd-tools.js references to gsd-tools.cjs across 9 skill files (2min)
+- 2026-02-16 Phase 07 Plan 01 complete: planner prototype creation + plan checker consistency dimension (2min)
 - 2026-02-16 Phase 07 Plan 02 complete: prototype-guided execution + auto-verify frontend in orchestrator (2min)
 
 ## Accumulated Context
