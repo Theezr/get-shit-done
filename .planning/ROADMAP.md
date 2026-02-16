@@ -78,7 +78,10 @@ Plans:
 
 ---
 
-### Phase 4: Resilience & Optimization
+### Phase 4: Resilience & Optimization ✓
+
+**Status:** Complete (2026-02-16)
+**Verified:** 17/17 must-haves passed
 
 **Goal:** Harden all skills with graceful MCP degradation, conditional agent prompt loading, gsd-tools.js phase-specific extraction, and end-to-end pipeline validation under real project conditions.
 
@@ -93,9 +96,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md -- Add phase-specific extraction to gsd-tools.js (requirements get-phase, roadmap --format, plan index type)
-- [ ] 04-02-PLAN.md -- Add MCP degradation to all agent definitions + RESEARCH.md-first consistency in planner
-- [ ] 04-03-PLAN.md -- Split executor into core + checkpoints + TDD, conditional loading in orchestrator
+- [x] 04-01-PLAN.md -- Add phase-specific extraction to gsd-tools.js (requirements get-phase, roadmap --format, plan index type)
+- [x] 04-02-PLAN.md -- Add MCP degradation to all agent definitions + RESEARCH.md-first consistency in planner
+- [x] 04-03-PLAN.md -- Split executor into core + checkpoints + TDD, conditional loading in orchestrator
 
 ---
 
