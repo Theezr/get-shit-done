@@ -158,5 +158,15 @@ Plans:
 Plans:
 - [ ] 06-01-PLAN.md -- Fix gsd-tools.js to gsd-tools.cjs extension in all nick skill files (repo + installed)
 
+### Phase 7: Prototype-driven design in plan phase and mandatory frontend verification after execution
+
+**Goal:** Add prototype-driven design to the planner (static HTML/CSS mockups alongside PLAN.md for frontend plans) and mandatory auto-triggered runtime verification in the execute-phase orchestrator when any plan has frontend work.
+**Depends on:** Phase 6
+**Plans:** 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md -- Add prototype creation to planner + frontend detection + prototype consistency check in plan checker
+- [ ] 07-02-PLAN.md -- Add prototype-guided execution to executor + auto-verify frontend step in execute-phase orchestrator
+
 ---
 *Roadmap created: 2026-02-15*
