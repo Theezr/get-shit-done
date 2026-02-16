@@ -1,14 +1,14 @@
 # Project State
 
 ## Current Position
-**Phase:** 04-resilience-optimization
-**Current Plan:** 3 of 3
-**Status:** Phase 4 verified and complete (17/17 must-haves passed)
+**Phase:** 05-convert-commands-agents-and-skills-from-gsd-to-nick-prefix
+**Current Plan:** 2 of 3
+**Status:** Executing phase 5 plans
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** All phases complete — milestone ready for completion
+**Current focus:** Converting gsd- prefix to nick- prefix across agents, skills, hooks
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -37,6 +37,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 04-03: Checkpoint + auth gates + continuation grouped in one conditional file (all relate to non-autonomous flow)
 - Phase 04-03: TDD kept as separate conditional file (orthogonal to checkpoint flow)
 - Phase 04-03: Global ~/.claude/agents/ sync deferred (sandbox restriction) -- repo source of truth
+- Phase 05-02: Created nick-prefixed copies in both repo (agents/, hooks/) and installed location (~/.claude/) for version control
+- Phase 05-02: Preserved all package-managed references: gsd-tools.js, /gsd: commands, get-shit-done paths, gsd-file-manifest.json
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -58,7 +60,13 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 04 Plan 03 complete: conditional prompt loading -- executor split into core+checkpoints+TDD, orchestrator conditional refs (5min)
 
 - 2026-02-16 Phase 04 verified: 17/17 must-haves passed, phase complete
+- 2026-02-16 Phase 05 Plan 02 complete: 11 nick-prefixed agents + 2 hooks + settings.json updated (2min)
+
+## Accumulated Context
+
+### Roadmap Evolution
+- Phase 5 added: Convert commands, agents, and skills from gsd- to nick- prefix
 
 ## Last Session
-**Stopped at:** Phase 4 complete, all 4 phases done — milestone ready
+**Stopped at:** Completed 05-02-PLAN.md
 **Timestamp:** 2026-02-16
