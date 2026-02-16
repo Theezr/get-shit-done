@@ -889,7 +889,8 @@ function cmdRequirementsGetPhase(cwd, phaseNum, raw) {
   }
 }
 
-function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
+function cmdRoadmapGetPhase(cwd, phaseNum, raw, format) {
+  format = format || 'json';
   const roadmapPath = path.join(cwd, '.planning', 'ROADMAP.md');
 
   if (!fs.existsSync(roadmapPath)) {
@@ -930,7 +931,11 @@ function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
         return;
       }
 
-      output({ found: false, phase_number: phaseNum }, raw, '');
+      if (format === 'section') {
+        output({ found: false, phase_number: phaseNum }, raw, '');
+      } else {
+        output({ found: false, phase_number: phaseNum }, raw, '');
+      }
       return;
     }
 
@@ -945,6 +950,13 @@ function cmdRoadmapGetPhase(cwd, phaseNum, raw) {
       : content.length;
 
     const section = content.slice(headerIndex, sectionEnd).trim();
+
+    // --format section: output raw markdown only
+    if (format === 'section') {
+      process.stdout.write(section);
+      process.exit(0);
+      return;
+    }
 
     // Extract goal if present
     const goalMatch = section.match(/\*\*Goal:\*\*\s*([^\n]+)/i);
@@ -1894,6 +1906,9 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
       hasCheckpoints = true;
     }
 
+    // Parse plan type (default: execute)
+    const planType = fm.type || 'execute';
+
     // Parse files-modified
     let filesModified = [];
     if (fm['files-modified']) {
@@ -1909,6 +1924,7 @@ function cmdPhasePlanIndex(cwd, phase, raw) {
       id: planId,
       wave,
       autonomous,
+      type: planType,
       objective: fm.objective || null,
       files_modified: filesModified,
       task_count: taskCount,
@@ -4723,7 +4739,9 @@ async function main() {
     case 'roadmap': {
       const subcommand = args[1];
       if (subcommand === 'get-phase') {
-        cmdRoadmapGetPhase(cwd, args[2], raw);
+        const formatIndex = args.indexOf('--format');
+        const format = formatIndex !== -1 ? args[formatIndex + 1] : 'json';
+        cmdRoadmapGetPhase(cwd, args[2], raw, format);
       } else if (subcommand === 'analyze') {
         cmdRoadmapAnalyze(cwd, raw);
       } else if (subcommand === 'update-plan-progress') {
