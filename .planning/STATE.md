@@ -2,13 +2,13 @@
 
 ## Current Position
 **Phase:** 04-resilience-optimization
-**Current Plan:** 2 of 3
-**Status:** Executing Phase 4
+**Current Plan:** 3 of 3
+**Status:** Phase 4 Complete
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
 **Core value:** Every command is a skill that produces correct, verified code fast
-**Current focus:** Phase 4 - Plans 01+02 complete, only Plan 03 (conditional prompt loading) remains
+**Current focus:** Phase 4 complete - all 3 plans executed. Ready for phase verification.
 
 ## Decisions
 - Phase 01-01: Skills live in ~/.claude/skills/ (user config), not in project git repo -- consistent with existing security-review skill pattern
@@ -34,6 +34,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 04-02: Browser-tester confidence uses binary HIGH/N/A (DevTools either runs tests or doesn't)
 - Phase 04-01: Used parseInt normalization so phase '4' matches '04' in requirements get-phase
 - Phase 04-01: Section format uses process.stdout.write + process.exit for raw output (bypasses JSON wrapper)
+- Phase 04-03: Checkpoint + auth gates + continuation grouped in one conditional file (all relate to non-autonomous flow)
+- Phase 04-03: TDD kept as separate conditional file (orthogonal to checkpoint flow)
+- Phase 04-03: Global ~/.claude/agents/ sync deferred (sandbox restriction) -- repo source of truth
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -52,7 +55,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 03 verified: 11/11 must-haves passed, phase complete
 - 2026-02-16 Phase 04 Plan 02 complete: MCP degradation in all 4 agent types + RESEARCH.md-first in planner (3min)
 - 2026-02-16 Phase 04 Plan 01 complete: gsd-tools.js phase-specific extraction -- requirements get-phase, roadmap --format, plan index type (4min)
+- 2026-02-16 Phase 04 Plan 03 complete: conditional prompt loading -- executor split into core+checkpoints+TDD, orchestrator conditional refs (5min)
 
 ## Last Session
-**Stopped at:** Completed 04-01-PLAN.md
+**Stopped at:** Completed 04-03-PLAN.md
 **Timestamp:** 2026-02-16
