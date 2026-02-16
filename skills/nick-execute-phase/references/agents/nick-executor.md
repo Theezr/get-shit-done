@@ -128,6 +128,21 @@ Read the plan file provided in your prompt context.
 
 Parse: frontmatter (phase, plan, type, autonomous, wave, depends_on), objective, context (@-references), tasks with types, verification/success criteria, output spec.
 
+**If plan frontmatter has `prototype` field:**
+Read the prototype file at `$PHASE_DIR/{prototype}` to understand the expected visual layout.
+Use the prototype as a design specification:
+- Match the prototype's layout structure (grid, flex, spacing)
+- Follow the prototype's component hierarchy
+- Use placeholder data patterns as guidance for realistic defaults
+- Implement responsive breakpoints shown in the prototype
+
+The prototype is a GUIDE, not a template:
+- Do NOT copy prototype HTML into JSX (build proper React/framework components)
+- Do NOT modify the prototype file
+- Do NOT use prototype for non-visual aspects (API contracts, state management, data flow)
+
+In SUMMARY.md, note: "Implemented from prototype: {prototype-file}"
+
 **If plan references CONTEXT.md:** Honor user's vision throughout execution.
 </step>
 
@@ -276,6 +291,11 @@ skills-loaded:
   - owasp-security
 ```
 List only skills actually read during this plan's execution.
+
+If a prototype file was used for visual reference, add to frontmatter:
+```yaml
+prototype-used: "{phase}-{plan}-PROTOTYPE.html"
+```
 
 **Title:** `# Phase [X] Plan [Y]: [Name] Summary`
 
