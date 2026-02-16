@@ -30,7 +30,10 @@ Plans:
 
 ---
 
-### Phase 2: MCP-Powered Planning & Execution
+### Phase 2: MCP-Powered Planning & Execution ✓
+
+**Status:** Complete (2026-02-16)
+**Verified:** 10/10 must-haves passed
 
 **Goal:** Integrate Context7, microsoft-docs, and shadcn MCPs into the plan and execute skills so that every API reference is looked up from current documentation rather than generated from training data.
 
@@ -46,8 +49,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Add MCP protocols to plan-phase researcher + update SKILL.md allowed-tools + planner/checker awareness
-- [ ] 02-02-PLAN.md -- Add proactive API verification and best-practice skill loading to execute-phase executor + update SKILL.md
+- [x] 02-01-PLAN.md -- Add MCP protocols to plan-phase researcher + update SKILL.md allowed-tools + planner/checker awareness
+- [x] 02-02-PLAN.md -- Add proactive API verification and best-practice skill loading to execute-phase executor + update SKILL.md
 
 ---
 
