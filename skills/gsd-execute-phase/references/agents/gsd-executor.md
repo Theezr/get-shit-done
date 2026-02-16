@@ -13,24 +13,69 @@ Spawned by `/gsd:execute-phase` orchestrator.
 Your job: Execute the plan completely, commit each task, create SUMMARY.md, update STATE.md.
 </role>
 
-<tool_strategy>
+<mcp_protocol>
 
-## Context7 for Implementation Lookups
+## Pre-Implementation API Verification
 
-When implementing tasks that use external libraries, use Context7 to verify API usage, check current syntax, and find correct patterns.
+**Before implementing each task, verify the plan's API references are current.**
 
-**When to use:**
-- Unsure about a library's API or method signature
-- Need current configuration patterns or setup code
-- Plan references a library you need correct usage for
+### Step 1: Read RESEARCH.md (if exists)
 
-**Flow:**
+Before any Context7 calls, check if the researcher already documented the libraries:
+- Read `$PHASE_DIR/*-RESEARCH.md` (the phase's research file)
+- If RESEARCH.md covers the library's API you need, skip Context7 for that library
+- This avoids double-querying what the researcher already verified
+
+### Step 2: Context7 API Verification
+
+For each library referenced in the task's `<action>` that is NOT covered in RESEARCH.md:
 1. `mcp__context7__resolve-library-id` with library name
-2. `mcp__context7__query-docs` with resolved ID + specific query (e.g., "how to configure middleware", "create route handler")
+2. `mcp__context7__query-docs` with resolved ID + the specific API/method from the plan
+3. Compare plan's API usage with Context7 results:
+   - **Match:** Proceed with plan's instructions
+   - **Mismatch:** Adapt to current API. Document deviation: "Plan referenced X, current API is Y"
+   - **Not found in Context7:** Proceed with plan's instructions (plan was already researched)
 
-**When NOT to use:** Don't research during execution unless you need to verify specific API usage. The plan already contains the research — follow it. Context7 is for confirming details, not exploring alternatives.
+**When NOT to verify:** Pure codebase-internal work (no external library APIs), configuration-only tasks, file copy/move tasks.
 
-</tool_strategy>
+**Efficiency:** Batch resolve-library-id calls. Only query-docs for APIs you are about to use, not entire library docs.
+
+### Step 3: Load Best-Practice Skills
+
+See `<best_practice_skills>` section below for detection heuristics and loading protocol.
+
+</mcp_protocol>
+
+<best_practice_skills>
+
+## Load Best-Practice Skills Before Writing Code
+
+**MANDATORY:** Before implementing code in a task, read the relevant best-practice skill SKILL.md files to follow their patterns.
+
+### Detection Heuristics
+
+| Task Indicators | Skill to Load | Skill Path |
+|-----------------|---------------|------------|
+| React components, hooks, Next.js pages/routes, JSX/TSX files | vercel-react-best-practices | `~/.claude/skills/vercel-react-best-practices/SKILL.md` |
+| NestJS controllers, services, modules, decorators (@Controller, @Injectable) | nestjs-best-practices | `~/.claude/skills/nestjs-best-practices/SKILL.md` |
+| Visual components, pages, layouts, UI styling, accessibility | web-design-guidelines | `~/.claude/skills/web-design-guidelines/SKILL.md` |
+| Auth, input validation, API endpoints, user data handling, secrets | owasp-security | `~/.claude/skills/owasp-security/SKILL.md` |
+
+### How to Load
+
+1. Read the skill's SKILL.md to get the rule categories and priorities
+2. For detailed rules, read the referenced files in `references/` as needed
+3. Apply CRITICAL-priority rules as hard requirements
+4. Apply HIGH-priority rules as strong recommendations
+
+### Loading Strategy
+
+- **Read SKILL.md first** (contains rule summary and references to detailed docs)
+- **Read specific references/** only for the categories relevant to your task
+- **Multiple skills can apply** to a single task (e.g., React + OWASP for a login form)
+- **Do NOT load all skills for every task** -- only load what the task indicators match
+
+</best_practice_skills>
 
 <execution_flow>
 
@@ -296,6 +341,14 @@ After all tasks complete, create `{phase}-{plan}-SUMMARY.md` at `.planning/phase
 **Use template:** @~/.claude/get-shit-done/templates/summary.md
 
 **Frontmatter:** phase, plan, subsystem, tags, dependency graph (requires/provides/affects), tech-stack (added/patterns), key-files (created/modified), decisions, metrics (duration, completed date).
+
+If best-practice skills were loaded during execution, add to frontmatter:
+```yaml
+skills-loaded:
+  - vercel-react-best-practices
+  - owasp-security
+```
+List only skills actually read during this plan's execution.
 
 **Title:** `# Phase [X] Plan [Y]: [Name] Summary`
 
