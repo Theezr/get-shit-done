@@ -122,106 +122,6 @@ If spot-check fails: ask user to retry or continue.
 
 **4f. Proceed to next wave.**
 
-## Step 4.5: Parallel Verify + Review
-
-After all waves complete, run verification and review in parallel. This replaces the need for manual `/gsd:review` invocation.
-
-**Check for frontend work:**
-
-```bash
-HAS_FRONTEND=$(grep -l "has_frontend: true" "$PHASE_DIR"/*-PLAN.md 2>/dev/null | wc -l | tr -d ' ')
-```
-
-**If HAS_FRONTEND > 0:** Spawn BOTH agents in parallel (two Task() calls in the same response):
-
-Inform user: "Running runtime verification and code review in parallel..."
-
-Task A (verify-work):
-
-```
-Task(
-  prompt="First, read ~/.claude/skills/nick-verify-work/SKILL.md for the verification workflow.
-
-  <objective>
-  Auto-verify frontend work for phase {phase_number}-{phase_name}.
-  Phase directory: {phase_dir}
-  </objective>
-
-  <files_to_read>
-  - {phase_dir}/*-SUMMARY.md
-  - {phase_dir}/*-PLAN.md
-  </files_to_read>
-
-  <output>Create {phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md</output>",
-  subagent_type="general-purpose"
-)
-```
-
-Task B (review) -- spawns the code-reviewer agent DIRECTLY (bypasses review skill orchestrator to avoid nested orchestration and double commits):
-
-```
-Task(
-  prompt="First, read ~/.claude/skills/nick-review/references/agents/nick-code-reviewer.md for your role.
-
-  <objective>
-  Review code quality for phase {phase_number}-{phase_name}.
-  Load relevant best-practice skills based on file patterns.
-  Run IDE diagnostics and typecheck (belt-and-suspenders).
-  Produce REVIEW.md with severity-graded findings.
-  Determine PASS or FAIL.
-  </objective>
-
-  <files_to_read>
-  - {phase_dir}/*-SUMMARY.md (all summaries -- identify files to review)
-  - {phase_dir}/*-PLAN.md (all plans -- check plan adherence)
-  </files_to_read>
-
-  <output>Create {phase_dir}/{padded_phase}-REVIEW.md</output>
-
-  <critical>DO NOT COMMIT. Leave committing to the orchestrator.</critical>",
-  subagent_type="general-purpose"
-)
-```
-
-**If HAS_FRONTEND = 0:** Spawn review ONLY (same Task B as above, no Task A):
-
-Inform user: "No frontend work detected. Running code review..."
-
-**After both tasks complete (or just review if no frontend), handle combined results:**
-
-Read REVIEW.md frontmatter for `result: PASS | FAIL`.
-Read RUNTIME-VERIFICATION.md frontmatter for `status: passed | issues_found | inconclusive` (if file exists).
-
-**Result matrix (ALL 5 combinations):**
-
-| Review Result | Verify Status | Action |
-|---------------|---------------|--------|
-| PASS | passed | Commit REVIEW.md + RUNTIME-VERIFICATION.md. Log "Review PASSED, runtime verified." |
-| PASS | issues_found | Commit REVIEW.md + RUNTIME-VERIFICATION.md. Display verify issues. Ask: "Runtime issues found. Address before phase goal verification?" |
-| PASS | inconclusive | Commit REVIEW.md only. Log "Review PASSED. Runtime verification inconclusive (Chrome DevTools unavailable)." |
-| PASS | N/A (no frontend) | Commit REVIEW.md only. Log "Review PASSED. No frontend -- runtime verification skipped." |
-| FAIL | any | Do NOT commit. Display review findings (Critical + High). Offer: "Fix issues and re-execute: `/gsd:execute-phase {X} --gaps`" |
-
-**Commit (when review PASS):**
-
-Build the file list dynamically based on what exists:
-
-```bash
-FILES="{phase_dir}/{padded_phase}-REVIEW.md"
-if [ -f "{phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md" ]; then
-  FILES="$FILES {phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md"
-fi
-
-node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit \
-  "docs(phase-{X}): review PASSED -- code quality verified" \
-  --files $FILES
-```
-
-**IMPORTANT details:**
-- The review agent is spawned DIRECTLY using nick-code-reviewer.md (not the review skill orchestrator), to avoid nested orchestration and double commits. The `<critical>DO NOT COMMIT</critical>` instruction prevents the agent from committing.
-- Both Task() calls MUST appear in the same response block to run in parallel.
-- Step 5 (Verify Phase Goal) remains unchanged and sequential AFTER Step 4.5.
-
 ## Step 5: Verify Phase Goal
 
 Spawn verifier:
@@ -262,5 +162,10 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(phase-{X}): complete
 
 ## Step 7: Offer Next
 
+Present options based on phase state:
+
+- **Optional quality checks** (suggest these first):
+  - If phase has frontend work (`has_frontend: true` in any plan): suggest `/gsd:verify-work {X}` for runtime verification
+  - Always suggest `/gsd:review {X}` for code quality review
 - If more phases: offer `/gsd:plan-phase {X+1}` (suggest `/clear` first for fresh context).
 - If milestone complete: offer `/gsd:complete-milestone`.
