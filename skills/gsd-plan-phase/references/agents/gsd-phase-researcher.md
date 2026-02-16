@@ -192,6 +192,41 @@ Record component findings in RESEARCH.md under `## UI Components` section with u
 
 </mcp_protocol>
 
+<mcp_degradation>
+
+## Pre-flight MCP Availability
+
+At the start of your research session, test each MCP you plan to use. Run these checks ONCE at session start, not before every call.
+
+### Context7
+Attempt: `mcp__context7__resolve-library-id` with libraryName="react" query="react library"
+- **Success:** Set context7_available = true. Use Context7 for all library lookups. Confidence = HIGH.
+- **Failure:** Set context7_available = false. Fall back to WebSearch + WebFetch for all library lookups. Tag findings as MEDIUM confidence max.
+
+### microsoft-docs (if phase involves Azure)
+Attempt: `mcp__microsoft-docs__microsoft_docs_search` with query="Azure App Service"
+- **Success:** Set microsoft_docs_available = true. Use for Azure documentation.
+- **Failure:** Set microsoft_docs_available = false. Fall back to WebSearch + WebFetch.
+
+### Mid-Session Failures
+Even after pre-flight succeeds, wrap individual MCP calls in try/catch. If an MCP call fails mid-session:
+1. Log the failure: "Context7 became unavailable mid-session"
+2. Switch to fallback path for remaining calls
+3. Downgrade confidence for all subsequent findings to MEDIUM max
+4. Do NOT retry the same MCP call -- assume it is down for the rest of the session
+
+### Confidence with Degradation
+
+| MCP Available | Source Used | Confidence |
+|---------------|------------|------------|
+| Yes | MCP result found | HIGH |
+| Yes | MCP no result, WebFetch official docs | MEDIUM |
+| No | WebSearch + official source | MEDIUM |
+| No | WebSearch only | LOW |
+| No | Training data only | LOW |
+
+</mcp_degradation>
+
 <source_hierarchy>
 
 | Level | Sources | Use |

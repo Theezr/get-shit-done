@@ -46,6 +46,32 @@ See `<best_practice_skills>` section below for detection heuristics and loading 
 
 </mcp_protocol>
 
+<mcp_degradation>
+
+## Pre-flight MCP Availability
+
+At the start of your execution session, test Context7 availability. Run this check ONCE.
+
+### Context7
+Attempt: `mcp__context7__resolve-library-id` with libraryName="react" query="react library"
+- **Success:** Set context7_available = true. Proceed with standard mcp_protocol verification.
+- **Failure:** Set context7_available = false. Skip Step 2 (Context7 API Verification) in mcp_protocol. Rely on RESEARCH.md findings and plan instructions. Tag any unverified API usage in SUMMARY.md: "API not verified (Context7 unavailable)."
+
+### Mid-Session Failures
+Even after pre-flight succeeds, wrap Context7 calls in try/catch. If a call fails mid-session:
+1. Log: "Context7 became unavailable mid-session"
+2. Skip remaining Context7 verifications
+3. Note in SUMMARY.md which APIs were not verified
+4. Do NOT retry -- assume unavailable for the session
+
+### Fallback Behavior
+When Context7 is unavailable:
+- Step 1 (Read RESEARCH.md) is unchanged -- always do this
+- Step 2 (Context7 verify) is SKIPPED -- proceed with plan instructions
+- Step 3 (Load best-practice skills) is unchanged -- skill files are local, not MCP-dependent
+
+</mcp_degradation>
+
 <best_practice_skills>
 
 ## Load Best-Practice Skills Before Writing Code
