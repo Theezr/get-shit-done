@@ -25,7 +25,7 @@ Orchestrator stays lean. The code-reviewer agent gets fresh 200k context.
 ## Step 1: Initialize
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.js init phase-op "$PHASE_ARG")
+INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init phase-op "$PHASE_ARG")
 ```
 
 Parse: `phase_dir`, `phase_number`, `phase_name`, `padded_phase`, `commit_docs`.
@@ -82,7 +82,7 @@ If REVIEW.md does not exist: Error -- "Code reviewer did not produce REVIEW.md."
 - Commit review artifacts:
 
 ```bash
-node ~/.claude/get-shit-done/bin/gsd-tools.js commit \
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit \
   "docs(phase-{X}): review PASSED -- code quality verified" \
   --files {phase_dir}/{padded_phase}-REVIEW.md {phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md
 ```

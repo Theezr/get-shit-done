@@ -44,7 +44,7 @@ Orchestrator stays lean. The browser-tester agent gets fresh 200k context for te
 ## Step 1: Initialize
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.js init phase-op "$PHASE_ARG")
+INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init phase-op "$PHASE_ARG")
 ```
 
 Parse: `phase_dir`, `phase_number`, `phase_name`, `padded_phase`.

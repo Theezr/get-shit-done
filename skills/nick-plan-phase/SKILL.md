@@ -28,7 +28,7 @@ Orchestrates research, planning, and verification agents to create executable PL
 ## 1. Initialize
 
 ```bash
-INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.js init plan-phase "$PHASE")
+INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init plan-phase "$PHASE")
 ```
 
 Parse from JSON: `phase_dir`, `padded_phase`, `phase_number`, `phase_name`, `phase_slug`, `has_research`, `has_context`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `research_enabled`, `plan_checker_enabled`, `researcher_model`, `planner_model`, `checker_model`, `commit_docs`.
@@ -48,7 +48,7 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 
 Validate phase:
 ```bash
-PHASE_INFO=$(node ~/.claude/get-shit-done/bin/gsd-tools.js roadmap get-phase "${PHASE}")
+PHASE_INFO=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "${PHASE}")
 ```
 
 Extract `phase_number`, `phase_name`, `goal` from JSON.
