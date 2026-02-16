@@ -122,6 +122,48 @@ If spot-check fails: ask user to retry or continue.
 
 **4f. Proceed to next wave.**
 
+## Step 4.5: Auto-Verify Frontend (conditional)
+
+After all waves complete, check if any executed plan has frontend work:
+
+```bash
+HAS_FRONTEND=$(grep -l "has_frontend: true" "$PHASE_DIR"/*-PLAN.md 2>/dev/null | wc -l | tr -d ' ')
+```
+
+**If HAS_FRONTEND > 0:**
+
+Inform user: "Frontend work detected in {HAS_FRONTEND} plan(s). Running runtime verification..."
+
+Spawn verify-work:
+
+```
+Task(
+  prompt="First, read ~/.claude/skills/nick-verify-work/SKILL.md for the verification workflow.
+
+  <objective>
+  Auto-verify frontend work for phase {phase_number}-{phase_name}.
+  Phase directory: {phase_dir}
+  </objective>
+
+  <files_to_read>
+  - {phase_dir}/*-SUMMARY.md
+  - {phase_dir}/*-PLAN.md
+  </files_to_read>
+
+  <output>Create {phase_dir}/{padded_phase}-RUNTIME-VERIFICATION.md</output>",
+  subagent_type="general-purpose"
+)
+```
+
+Handle result from RUNTIME-VERIFICATION.md frontmatter `status`:
+- **passed:** Log "Runtime verification passed." Continue to Step 5.
+- **issues_found:** Display issue summary to user. Ask: "Frontend issues found. Address before proceeding? (yes to halt / no to continue)"
+- **inconclusive:** Log "Runtime verification skipped (Chrome DevTools unavailable or app not running). Consider running `/gsd:verify-work {phase}` manually when ready." Continue to Step 5.
+
+**If HAS_FRONTEND = 0:**
+
+Skip. Log: "No frontend plans in this phase. Skipping runtime verification."
+
 ## Step 5: Verify Phase Goal
 
 Spawn verifier:
