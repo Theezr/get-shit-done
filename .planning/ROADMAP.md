@@ -168,5 +168,14 @@ Plans:
 - [ ] 07-01-PLAN.md -- Add prototype creation to planner + frontend detection + prototype consistency check in plan checker
 - [ ] 07-02-PLAN.md -- Add prototype-guided execution to executor + auto-verify frontend step in execute-phase orchestrator
 
+### Phase 8: Combine review and verify-work skills into parallel execution
+
+**Goal:** Combine the review and verify-work skills so they run in parallel after execution, reducing wall-clock time and eliminating the manual review step.
+**Depends on:** Phase 7
+**Plans:** 1 plan
+
+Plans:
+- [ ] 08-01-PLAN.md -- Parallel verify + review in execute-phase Step 4.5 with result matrix and decoupled review skill
+
 ---
 *Roadmap created: 2026-02-15*
