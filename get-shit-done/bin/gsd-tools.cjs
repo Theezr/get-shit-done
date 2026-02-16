@@ -165,6 +165,7 @@ function loadConfig(cwd) {
     phase_branch_template: 'gsd/phase-{phase}-{slug}',
     milestone_branch_template: 'gsd/{milestone}-{slug}',
     research: true,
+    research_strategy: 'single',
     plan_checker: true,
     verifier: true,
     parallelization: true,
@@ -198,6 +199,7 @@ function loadConfig(cwd) {
       phase_branch_template: get('phase_branch_template', { section: 'git', field: 'phase_branch_template' }) ?? defaults.phase_branch_template,
       milestone_branch_template: get('milestone_branch_template', { section: 'git', field: 'milestone_branch_template' }) ?? defaults.milestone_branch_template,
       research: get('research', { section: 'workflow', field: 'research' }) ?? defaults.research,
+      research_strategy: get('research_strategy', { section: 'workflow', field: 'research_strategy' }) ?? defaults.research_strategy,
       plan_checker: get('plan_checker', { section: 'workflow', field: 'plan_check' }) ?? defaults.plan_checker,
       verifier: get('verifier', { section: 'workflow', field: 'verifier' }) ?? defaults.verifier,
       parallelization,
@@ -615,6 +617,7 @@ function cmdConfigEnsureSection(cwd, raw) {
     milestone_branch_template: 'gsd/{milestone}-{slug}',
     workflow: {
       research: true,
+      research_strategy: 'single',
       plan_check: true,
       verifier: true,
     },
@@ -2581,7 +2584,7 @@ function cmdRoadmapAnalyze(cwd, raw) {
         planCount = phaseFiles.filter(f => f.endsWith('-PLAN.md') || f === 'PLAN.md').length;
         summaryCount = phaseFiles.filter(f => f.endsWith('-SUMMARY.md') || f === 'SUMMARY.md').length;
         hasContext = phaseFiles.some(f => f.endsWith('-CONTEXT.md') || f === 'CONTEXT.md');
-        hasResearch = phaseFiles.some(f => f.endsWith('-RESEARCH.md') || f === 'RESEARCH.md');
+        hasResearch = phaseFiles.some(f => /(-RESEARCH\.md$|-RESEARCH-.+\.md$|^RESEARCH\.md$)/.test(f));
 
         if (summaryCount >= planCount && planCount > 0) diskStatus = 'complete';
         else if (summaryCount > 0) diskStatus = 'partial';
@@ -3740,7 +3743,7 @@ function findPhaseInternal(cwd, phase) {
 
     const plans = phaseFiles.filter(f => f.endsWith('-PLAN.md') || f === 'PLAN.md').sort();
     const summaries = phaseFiles.filter(f => f.endsWith('-SUMMARY.md') || f === 'SUMMARY.md').sort();
-    const hasResearch = phaseFiles.some(f => f.endsWith('-RESEARCH.md') || f === 'RESEARCH.md');
+    const hasResearch = phaseFiles.some(f => /(-RESEARCH\.md$|-RESEARCH-.+\.md$|^RESEARCH\.md$)/.test(f));
     const hasContext = phaseFiles.some(f => f.endsWith('-CONTEXT.md') || f === 'CONTEXT.md');
     const hasVerification = phaseFiles.some(f => f.endsWith('-VERIFICATION.md') || f === 'VERIFICATION.md');
 
@@ -3922,6 +3925,7 @@ function cmdInitPlanPhase(cwd, phase, includes, raw) {
 
     // Workflow flags
     research_enabled: config.research,
+    research_strategy: config.research_strategy,
     plan_checker_enabled: config.plan_checker,
     commit_docs: config.commit_docs,
 
@@ -3966,13 +3970,18 @@ function cmdInitPlanPhase(cwd, phase, includes, raw) {
     } catch {}
   }
   if (includes.has('research') && phaseInfo?.directory) {
-    // Find *-RESEARCH.md in phase directory
+    // Find *-RESEARCH*.md in phase directory (single or parallel research files)
     const phaseDirFull = path.join(cwd, phaseInfo.directory);
     try {
       const files = fs.readdirSync(phaseDirFull);
-      const researchFile = files.find(f => f.endsWith('-RESEARCH.md') || f === 'RESEARCH.md');
-      if (researchFile) {
-        result.research_content = safeReadFile(path.join(phaseDirFull, researchFile));
+      const researchFiles = files.filter(f => /(-RESEARCH\.md$|-RESEARCH-.+\.md$|^RESEARCH\.md$)/.test(f)).sort();
+      if (researchFiles.length === 1) {
+        result.research_content = safeReadFile(path.join(phaseDirFull, researchFiles[0]));
+      } else if (researchFiles.length > 1) {
+        result.research_files = researchFiles.map(f => ({
+          name: f,
+          content: safeReadFile(path.join(phaseDirFull, f))
+        }));
       }
     } catch {}
   }
@@ -4419,7 +4428,7 @@ function cmdInitProgress(cwd, includes, raw) {
 
       const plans = phaseFiles.filter(f => f.endsWith('-PLAN.md') || f === 'PLAN.md');
       const summaries = phaseFiles.filter(f => f.endsWith('-SUMMARY.md') || f === 'SUMMARY.md');
-      const hasResearch = phaseFiles.some(f => f.endsWith('-RESEARCH.md') || f === 'RESEARCH.md');
+      const hasResearch = phaseFiles.some(f => /(-RESEARCH\.md$|-RESEARCH-.+\.md$|^RESEARCH\.md$)/.test(f));
 
       const status = summaries.length >= plans.length && plans.length > 0 ? 'complete' :
                      plans.length > 0 ? 'in_progress' :
