@@ -56,6 +56,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 08-01: Review skill retains standalone commit-on-PASS for /gsd:review; orchestrator overrides via DO NOT COMMIT prompt
 - Phase 08-01: Non-frontend phases skip verify-work entirely, run review only (SUPERSEDED by Quick-2: all verify/review is manual)
 - Quick-2: Keep Phase 8 review decoupling (nick-review/SKILL.md DO NOT COMMIT pattern) -- only revert the auto-spawning in execute-phase
+- Quick-5: Mental counters for agents_spawned/c7_queries (bash state does not persist); START_TIME/START_COMMIT remembered as text by orchestrator
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -88,6 +89,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Quick Task 2 complete: removed auto verify+review (Step 4.5) from execute-phase, manual invocation via Step 7 (1min)
 - 2026-02-16 Quick Task 3 complete: parallel research_strategy config + domain-scoped researcher spawning + multi-RESEARCH detection (3min)
 - 2026-02-16 Quick Task 4 complete: OWASP security review integration in nick-code-reviewer agent (2min)
+- 2026-02-16 Quick Task 5 complete: execution metrics tracking added to all 4 nick-prefixed skills (3min)
 
 ### Quick Tasks Completed
 
@@ -97,6 +99,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 | 2 | Revert Phase 8 auto verify+review from execute-phase | 2026-02-16 | 2c5b1aa | [2-revert-phase-8-remove-auto-verify-review](./quick/2-revert-phase-8-remove-auto-verify-review/) |
 | 3 | Parallel research for multi-plan phases | 2026-02-16 | 72fed57 | [3-parallel-research-for-multi-plan-phases-](./quick/3-parallel-research-for-multi-plan-phases-/) |
 | 4 | Add OWASP security skill to nick code reviewer | 2026-02-16 | 2ae83dd | [4-add-owasp-security-skill-to-nick-code-re](./quick/4-add-owasp-security-skill-to-nick-code-re/) |
+| 5 | Add execution metrics to STATE.md via skills | 2026-02-16 | 5d567c8 | [5-add-execution-metrics-to-state-md-via-sk](./quick/5-add-execution-metrics-to-state-md-via-sk/) |
 
 ## Accumulated Context
 
@@ -109,5 +112,5 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed Quick Task 4 (OWASP security review integration in nick-code-reviewer)
+**Stopped at:** Completed Quick Task 5 (execution metrics tracking in all 4 skills)
 **Timestamp:** 2026-02-16
