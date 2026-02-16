@@ -47,6 +47,7 @@ Scan the file list from Step 1 and load skills matching the detection heuristics
 - Read the skill's SKILL.md first (rule summary and priorities)
 - Read specific `references/` files only for categories relevant to the files under review
 - Multiple skills can apply to one review (e.g., React + OWASP for auth UI components)
+- When owasp-security is loaded: also read OWASP Top 10 2021 category descriptions from the skill's references to accurately map findings to categories (A01-A10)
 - Do NOT load all skills for every review -- only load what file patterns match
 - If no file patterns match any skill, still proceed with general code review (logic, types, error handling)
 - Track which skills were loaded for REVIEW.md frontmatter
@@ -65,6 +66,16 @@ Read ALL files from the file list in Step 1. For each file, check:
 - **Maintainability:** DRY violations, magic numbers, deeply nested logic, undocumented complexity
 - **Plan adherence:** Does the code match what the PLAN.md specified? Does the implementation fulfill the task's `<action>` and `<done>` criteria?
 - **Anti-patterns:** Check against loaded best-practice skill rules (CRITICAL and HIGH priority rules)
+
+**Security Review (when owasp-security skill is loaded):**
+
+When the owasp-security skill was loaded in Step 2, perform additional security-focused review:
+
+- For each file handling auth, validation, user input, API endpoints, secrets, or env vars:
+  - Check against OWASP Top 10 2021 categories (A01:Broken Access Control through A10:SSRF)
+  - For each security finding, record which OWASP category it maps to (e.g., "A03:Injection -- unsanitized user input in SQL query")
+  - Check for issues the general review might miss: insecure defaults, missing security headers, overly permissive CORS, hardcoded credentials, timing attacks in auth comparisons
+- Security findings get their normal severity classification (Critical/High/Medium/Low) AND are collected separately for the Security Findings section in REVIEW.md
 
 Record findings with: file path, line number (when applicable), severity, description, and fix recommendation.
 
@@ -178,6 +189,10 @@ Observations and suggestions:
 - Documentation improvements
 - Refactoring suggestions
 - Alternative approaches that might be cleaner
+
+### Security Findings Cross-Reference
+
+When the owasp-security skill is loaded, security-related findings are classified under their normal severity level above AND duplicated in the dedicated "Security Findings" section of REVIEW.md. This ensures security issues are both (a) counted toward PASS/FAIL via severity and (b) visible as a consolidated security audit trail with OWASP category mappings.
 
 </severity_levels>
 
