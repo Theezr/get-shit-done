@@ -32,6 +32,17 @@ INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init execute-phase "$PHASE
 
 Parse: `executor_model`, `verifier_model`, `commit_docs`, `parallelization`, `branching_strategy`, `branch_name`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `plans`, `incomplete_plans`, `plan_count`, `incomplete_count`.
 
+**Metrics tracking:** Capture start time and initialize counters for end-of-skill metrics.
+
+```bash
+START_TIME=$(date +%s)
+START_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
+```
+
+Initialize mental counters (track these as you orchestrate -- do NOT use bash variables since shell state does not persist between Bash calls):
+- `agents_spawned`: 0 (increment each time you call Task())
+- `c7_queries`: 0 (increment each time you call mcp__context7__resolve-library-id or mcp__context7__query-docs)
+
 - If `phase_found` is false: Error -- phase directory not found.
 - If `plan_count` is 0: Error -- no plans found.
 
@@ -62,6 +73,7 @@ For each wave in sequence:
 
 **4b. Spawn executor agents** -- Parallel if `parallelization=true`, sequential if `false`:
 
+<!-- metrics: +N agents (one per plan in wave) -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-execute-phase/references/agents/nick-executor.md for your role.
@@ -118,7 +130,7 @@ If spot-check fails: ask user to retry or continue.
 
 **classifyHandoffIfNeeded bug:** If agent reports "failed" with `classifyHandoffIfNeeded is not defined`, this is a Claude Code bug. Run spot-checks -- if PASS, treat as successful.
 
-**4e. Handle checkpoint plans** (`autonomous: false`): Agent returns structured state. Present to user. Spawn fresh continuation agent with completed tasks table and resume point. **IMPORTANT:** The continuation agent's execution_context MUST include nick-executor-checkpoints.md -- continuation handling is in that file.
+**4e. Handle checkpoint plans** (`autonomous: false`): Agent returns structured state. Present to user. Spawn fresh continuation agent with completed tasks table and resume point. **IMPORTANT:** The continuation agent's execution_context MUST include nick-executor-checkpoints.md -- continuation handling is in that file. <!-- metrics: +1 agent per continuation -->
 
 **4f. Proceed to next wave.**
 
@@ -126,6 +138,7 @@ If spot-check fails: ask user to retry or continue.
 
 Spawn verifier:
 
+<!-- metrics: +1 agent -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-execute-phase/references/agents/nick-verifier.md for your role.
@@ -169,3 +182,33 @@ Present options based on phase state:
   - Always suggest `/gsd:review {X}` for code quality review
 - If more phases: offer `/gsd:plan-phase {X+1}` (suggest `/clear` first for fresh context).
 - If milestone complete: offer `/gsd:complete-milestone`.
+
+**Metrics:** Append execution metrics to STATE.md.
+
+```bash
+END_TIME=$(date +%s)
+WALL_TIME=$((END_TIME - START_TIME))
+FILES_MODIFIED=$(git diff --name-only $START_COMMIT HEAD 2>/dev/null | wc -l | tr -d ' ')
+```
+
+Note: `START_TIME` and `START_COMMIT` were captured in Step 1. The orchestrator remembers these values as text from that Bash output. Substitute them as literal values in the above block.
+
+Format wall time as `Xm Ys` (e.g., `3m 45s` or `0m 30s`). Construct a metrics row:
+
+```
+| execute-phase | Phase {X} | {YYYY-MM-DD} | {Xm Ys} | {agents_spawned} | {c7_queries} | {files_modified} |
+```
+
+Read STATE.md. If it does not contain `### Execution Metrics`, append this section:
+
+```markdown
+
+### Execution Metrics
+
+| Skill | Phase/Task | Date | Wall Time | Agents | C7 Queries | Files Modified |
+|-------|-----------|------|-----------|--------|------------|----------------|
+```
+
+Then append the metrics row after the table header (or after the last existing row).
+
+Write the updated STATE.md.

@@ -33,6 +33,17 @@ INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init plan-phase "$PHASE")
 
 Parse from JSON: `phase_dir`, `padded_phase`, `phase_number`, `phase_name`, `phase_slug`, `has_research`, `has_context`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`, `research_enabled`, `plan_checker_enabled`, `researcher_model`, `planner_model`, `checker_model`, `commit_docs`.
 
+**Metrics tracking:** Capture start time and initialize counters for end-of-skill metrics.
+
+```bash
+START_TIME=$(date +%s)
+START_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
+```
+
+Initialize mental counters (track these as you orchestrate -- do NOT use bash variables since shell state does not persist between Bash calls):
+- `agents_spawned`: 0 (increment each time you call Task())
+- `c7_queries`: 0 (increment each time you call mcp__context7__resolve-library-id or mcp__context7__query-docs)
+
 If `planning_exists` is false: Error -- run `/gsd:new-project` first.
 
 ## 2. Parse Arguments
@@ -61,6 +72,7 @@ Extract `phase_number`, `phase_name`, `goal` from JSON.
 
 **If strategy is `single` (default):** Spawn one researcher as before:
 
+<!-- metrics: +1 agent -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-plan-phase/references/agents/nick-phase-researcher.md for your role and instructions.
@@ -88,6 +100,7 @@ Task(
 
 For each domain, spawn a researcher in parallel:
 
+<!-- metrics: +N agents (one per domain, typically 2-4) -->
 ```
 # Spawn all researchers concurrently using Task()
 # Each gets a scoped focus and writes to a domain-specific file
@@ -121,6 +134,7 @@ Handle return: `## RESEARCH COMPLETE` -> continue. `## RESEARCH BLOCKED` -> disp
 
 ## 4. Spawn Planner
 
+<!-- metrics: +1 agent -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-plan-phase/references/agents/nick-planner.md for your role and instructions.
@@ -154,6 +168,7 @@ Handle return: `## PLANNING COMPLETE` -> continue. `## CHECKPOINT REACHED` -> pr
 
 **Skip if:** `--skip-verify` flag or `plan_checker_enabled=false`.
 
+<!-- metrics: +1 agent -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-plan-phase/references/agents/nick-plan-checker.md for your role and instructions.
@@ -179,6 +194,7 @@ Handle return: `## VERIFICATION PASSED` -> continue. `## ISSUES FOUND` -> revisi
 
 If checker returns ISSUES FOUND, re-spawn planner with issue list and plan paths:
 
+<!-- metrics: +1 agent each iteration (planner + checker) -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-plan-phase/references/agents/nick-planner.md for your role and instructions.
@@ -219,3 +235,33 @@ Verification: {Passed | Passed with override | Skipped}
 
 Next: /gsd:execute-phase {X}
 ```
+
+**Metrics:** Append execution metrics to STATE.md.
+
+```bash
+END_TIME=$(date +%s)
+WALL_TIME=$((END_TIME - START_TIME))
+FILES_MODIFIED=$(git diff --name-only $START_COMMIT HEAD 2>/dev/null | wc -l | tr -d ' ')
+```
+
+Note: `START_TIME` and `START_COMMIT` were captured in Step 1. The orchestrator remembers these values as text from that Bash output. Substitute them as literal values in the above block.
+
+Format wall time as `Xm Ys` (e.g., `3m 45s` or `0m 30s`). Construct a metrics row:
+
+```
+| plan-phase | Phase {X} | {YYYY-MM-DD} | {Xm Ys} | {agents_spawned} | {c7_queries} | {files_modified} |
+```
+
+Read STATE.md. If it does not contain `### Execution Metrics`, append this section:
+
+```markdown
+
+### Execution Metrics
+
+| Skill | Phase/Task | Date | Wall Time | Agents | C7 Queries | Files Modified |
+|-------|-----------|------|-----------|--------|------------|----------------|
+```
+
+Then append the metrics row after the table header (or after the last existing row).
+
+Write the updated STATE.md.
