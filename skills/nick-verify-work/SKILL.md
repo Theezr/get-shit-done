@@ -49,6 +49,17 @@ INIT=$(node ~/.claude/get-shit-done/bin/gsd-tools.cjs init phase-op "$PHASE_ARG"
 
 Parse: `phase_dir`, `phase_number`, `phase_name`, `padded_phase`.
 
+**Metrics tracking:** Capture start time and initialize counters for end-of-skill metrics.
+
+```bash
+START_TIME=$(date +%s)
+START_COMMIT=$(git rev-parse HEAD 2>/dev/null || echo "none")
+```
+
+Initialize mental counters (track these as you orchestrate -- do NOT use bash variables since shell state does not persist between Bash calls):
+- `agents_spawned`: 0 (increment each time you call Task())
+- `c7_queries`: 0 (verify-work does not use Context7 -- this will always be 0, included for table consistency)
+
 - If phase not found: Error -- phase directory does not exist.
 
 ## Step 2: Load Phase Context
@@ -78,6 +89,7 @@ Attempt `mcp__chrome-devtools__list_pages` to verify Chrome DevTools MCP is conn
 
 ## Step 4: Spawn Browser Tester
 
+<!-- metrics: +1 agent -->
 ```
 Task(
   prompt="First, read ~/.claude/skills/nick-verify-work/references/agents/nick-browser-tester.md for your role.
@@ -124,3 +136,33 @@ Display verification summary table:
 ```
 
 Offer `/gsd:review {phase}` as the next step in the pipeline.
+
+**Metrics:** Append execution metrics to STATE.md.
+
+```bash
+END_TIME=$(date +%s)
+WALL_TIME=$((END_TIME - START_TIME))
+FILES_MODIFIED=$(git diff --name-only $START_COMMIT HEAD 2>/dev/null | wc -l | tr -d ' ')
+```
+
+Note: `START_TIME` and `START_COMMIT` were captured in Step 1. The orchestrator remembers these values as text from that Bash output. Substitute them as literal values in the above block.
+
+Format wall time as `Xm Ys` (e.g., `3m 45s` or `0m 30s`). Construct a metrics row:
+
+```
+| verify-work | Phase {X} | {YYYY-MM-DD} | {Xm Ys} | {agents_spawned} | {c7_queries} | {files_modified} |
+```
+
+Read STATE.md. If it does not contain `### Execution Metrics`, append this section:
+
+```markdown
+
+### Execution Metrics
+
+| Skill | Phase/Task | Date | Wall Time | Agents | C7 Queries | Files Modified |
+|-------|-----------|------|-----------|--------|------------|----------------|
+```
+
+Then append the metrics row after the table header (or after the last existing row).
+
+Write the updated STATE.md.
