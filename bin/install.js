@@ -874,6 +874,23 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
   }
 
+  // 3b. Remove GSD skills (gsd-* directories only)
+  const skillsDir = path.join(targetDir, 'skills');
+  if (fs.existsSync(skillsDir)) {
+    const skillDirs = fs.readdirSync(skillsDir);
+    let skillCount = 0;
+    for (const dir of skillDirs) {
+      if (dir.startsWith('gsd-')) {
+        fs.rmSync(path.join(skillsDir, dir), { recursive: true });
+        skillCount++;
+      }
+    }
+    if (skillCount > 0) {
+      removedCount++;
+      console.log(`  ${green}✓${reset} Removed ${skillCount} GSD skills`);
+    }
+  }
+
   // 4. Remove GSD hooks
   const hooksDir = path.join(targetDir, 'hooks');
   if (fs.existsSync(hooksDir)) {
@@ -1235,6 +1252,17 @@ function writeManifest(configDir) {
       }
     }
   }
+  const skillsDir = path.join(configDir, 'skills');
+  if (fs.existsSync(skillsDir)) {
+    for (const dir of fs.readdirSync(skillsDir)) {
+      if (dir.startsWith('gsd-')) {
+        const skillHashes = generateManifest(path.join(skillsDir, dir));
+        for (const [rel, hash] of Object.entries(skillHashes)) {
+          manifest.files['skills/' + dir + '/' + rel] = hash;
+        }
+      }
+    }
+  }
 
   fs.writeFileSync(path.join(configDir, MANIFEST_NAME), JSON.stringify(manifest, null, 2));
   return manifest;
@@ -1422,6 +1450,27 @@ function install(isGlobal, runtime = 'claude') {
       console.log(`  ${green}✓${reset} Installed agents`);
     } else {
       failures.push('agents');
+    }
+  }
+
+  // Copy skills to skills directory (gsd-* skills only)
+  const skillsSrc = path.join(src, 'skills');
+  if (fs.existsSync(skillsSrc)) {
+    const skillsDest = path.join(targetDir, 'skills');
+    fs.mkdirSync(skillsDest, { recursive: true });
+
+    const skillEntries = fs.readdirSync(skillsSrc, { withFileTypes: true });
+    for (const entry of skillEntries) {
+      if (entry.isDirectory() && entry.name.startsWith('gsd-')) {
+        const skillSrcDir = path.join(skillsSrc, entry.name);
+        const skillDestDir = path.join(skillsDest, entry.name);
+        copyWithPathReplacement(skillSrcDir, skillDestDir, pathPrefix, runtime);
+      }
+    }
+    if (verifyInstalled(skillsDest, 'skills')) {
+      console.log(`  ${green}✓${reset} Installed skills`);
+    } else {
+      failures.push('skills');
     }
   }
 
