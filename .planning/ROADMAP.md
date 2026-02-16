@@ -149,5 +149,14 @@ Plans:
 - [x] 05-02-PLAN.md -- Rename global agents and hooks from gsd- to nick- prefix, update settings.json
 - [x] 05-03-PLAN.md -- Install nick-prefixed skills, delete old gsd- files, verify in Claude Code
 
+### Phase 6: Fix nick skill paths: use nick: commands in flow recommendations, fix gsd-tools.cjs path and relative @-reference resolution
+
+**Goal:** Fix all gsd-tools.js references to gsd-tools.cjs in nick-prefixed skills so that bash invocations resolve to the actual installed file. Research confirmed /gsd: command recommendations are correct (package commands exist) and @-reference resolution is likely working (test before changing).
+**Depends on:** Phase 5
+**Plans:** 1 plan
+
+Plans:
+- [ ] 06-01-PLAN.md -- Fix gsd-tools.js to gsd-tools.cjs extension in all nick skill files (repo + installed)
+
 ---
 *Roadmap created: 2026-02-15*
