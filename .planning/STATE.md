@@ -2,8 +2,8 @@
 
 ## Current Position
 **Phase:** 03-verification-review-pipeline
-**Current Plan:** 1 of 2
-**Status:** Plan 03-01 complete, Plan 03-02 pending
+**Current Plan:** 2 of 2
+**Status:** Phase 3 plans complete, ready for verification
 
 ## Project Reference
 See: .planning/PROJECT.md (updated 2026-02-15)
@@ -26,6 +26,9 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 03-01: Output file named RUNTIME-VERIFICATION.md (not VERIFICATION.md) to avoid collision with existing goal-backward verification
 - Phase 03-01: Edit tool excluded from allowed-tools enforcing PIPE-04 (verifier never modifies source)
 - Phase 03-01: Non-UI phases get inconclusive status (not failed) -- verify skill is optional for non-UI work
+- Phase 03-02: Review skill commits review/verification artifacts only, not executor code (executor per-task commits preserved per deferred PIPE-03)
+- Phase 03-02: No Edit tool in reviewer allowed-tools -- reviewer reports findings only, never modifies source
+- Phase 03-02: Belt-and-suspenders: IDE diagnostics as first check, typecheck as authoritative source when they disagree
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -40,7 +43,8 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 02 Plan 02 complete: execute-phase MCP integration -- proactive API verification + skill loading (2min)
 - 2026-02-16 Phase 02 verified: 10/10 must-haves passed, phase complete
 - 2026-02-16 Phase 03 Plan 01 complete: gsd-verify-work skill with Chrome DevTools runtime testing (3min)
+- 2026-02-16 Phase 03 Plan 02 complete: gsd-review skill with commit-on-PASS gate + code-reviewer agent (5min)
 
 ## Last Session
-**Stopped at:** Completed 03-01-PLAN.md (gsd-verify-work skill)
+**Stopped at:** Completed 03-02-PLAN.md (gsd-review skill)
 **Timestamp:** 2026-02-16
