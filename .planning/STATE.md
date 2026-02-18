@@ -58,6 +58,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Quick-2: Keep Phase 8 review decoupling (nick-review/SKILL.md DO NOT COMMIT pattern) -- only revert the auto-spawning in execute-phase
 - Quick-5: Mental counters for agents_spawned/c7_queries (bash state does not persist); START_TIME/START_COMMIT remembered as text by orchestrator
 - Quick-6: Prototype framing changed from GUIDE to SPECIFICATION; design token extraction mandatory before frontend implementation
+- Quick-7: All .planning commit calls guarded by commit_docs conditional; agents skip commit call entirely when commit_docs is false
 
 ## Progress
 - 2026-02-15 Project initialized
@@ -92,6 +93,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Quick Task 4 complete: OWASP security review integration in nick-code-reviewer agent (2min)
 - 2026-02-16 Quick Task 5 complete: execution metrics tracking added to all 4 nick-prefixed skills (3min)
 - 2026-02-18 Quick Task 6 complete: prescriptive prototype handling with design token extraction and fidelity checks (1min)
+- 2026-02-18 Quick Task 7 complete: commit_docs conditional guards on all .planning commit calls across 26 files
 
 ### Quick Tasks Completed
 
@@ -103,6 +105,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 | 4 | Add OWASP security skill to nick code reviewer | 2026-02-16 | 2ae83dd | [4-add-owasp-security-skill-to-nick-code-re](./quick/4-add-owasp-security-skill-to-nick-code-re/) |
 | 5 | Add execution metrics to STATE.md via skills | 2026-02-16 | 5d567c8 | [5-add-execution-metrics-to-state-md-via-sk](./quick/5-add-execution-metrics-to-state-md-via-sk/) |
 | 6 | Fix executor to follow prototype design specification | 2026-02-18 | 4e043f3 | [6-fix-executor-to-follow-prototype-design-](./quick/6-fix-executor-to-follow-prototype-design-/) |
+| 7 | Fix planners and executors that try to commit .planning files when gitignored | 2026-02-18 | 4ff2640 | [7-fix-planners-and-executors-that-try-to-c](./quick/7-fix-planners-and-executors-that-try-to-c/) |
 
 ## Accumulated Context
 
@@ -115,6 +118,6 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - 2026-02-16 Phase 05 verified: 16/16 must-haves passed, phase complete
 
 ## Last Session
-**Stopped at:** Completed Quick Task 6 (prescriptive prototype handling in nick-executor)
+**Stopped at:** Completed Quick Task 7 (commit_docs guards on .planning commits)
 **Timestamp:** 2026-02-18
-Last activity: 2026-02-18 - Completed quick task 6: Fix executor to follow prototype design specification
+Last activity: 2026-02-18 - Completed quick task 7: Fix planners and executors that try to commit .planning files when gitignored
