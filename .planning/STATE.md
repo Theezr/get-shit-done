@@ -49,7 +49,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 - Phase 07-01: Prototypes are static HTML/CSS with 150-line cap and 10-15% context budget
 - Phase 07-01: has_frontend is optional frontmatter field (default false) set by planner, not derived at runtime
 - Phase 07-01: Prototype consistency is a warning-level validation dimension, not a blocker
-- Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML
+- Phase 07-02: Prototype is a GUIDE not a template -- executor builds proper components, never copies HTML (SUPERSEDED by Quick-6: prototype is now a design SPECIFICATION with mandatory token extraction and fidelity checks)
 - Phase 07-02: Auto-verification runs between Step 4 and Step 5 as Step 4.5 (SUPERSEDED by Quick-2: removed auto verify+review from execute-phase)
 - Phase 07-02: Inconclusive outcome continues execution with manual verification suggestion
 - Phase 08-01: Spawn code-reviewer agent directly (not review skill orchestrator) to avoid nested orchestration and double commits (SUPERSEDED by Quick-2: auto-spawning removed, review is manual)
