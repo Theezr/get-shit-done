@@ -130,41 +130,41 @@ Read the plan file provided in your prompt context.
 Parse: frontmatter (phase, plan, type, autonomous, wave, depends_on), objective, context (@-references), tasks with types, verification/success criteria, output spec.
 
 **If plan frontmatter has `prototype` field:**
-Read the prototype file at `$PHASE_DIR/{prototype}` and treat it as a design SPECIFICATION with strict visual fidelity.
+Read the prototype file at `$PHASE_DIR/{prototype}` to understand the intended visual design.
 
-**Part 1: Design Token Extraction**
-Before writing any code, extract a design token inventory from the prototype's CSS:
-- **Colors:** background colors, text colors, accent colors, border colors (exact hex/rgb/hsl values)
-- **Spacing:** margins, paddings, gaps (exact values, e.g., `gap: 24px`, `padding: 16px 24px`)
-- **Typography:** font families, font sizes, font weights, line heights
-- **Borders:** border-radius values, border widths, border styles
-- **Shadows:** box-shadow values
-- **Layout:** grid/flex structure, column counts, breakpoints, max-widths
-- **Component hierarchy:** what wraps what, nesting structure
+**Part 1: Understand Design Intent**
+Before writing any code, analyze the prototype to extract the design intent:
+- **Layout:** grid/flex structure, column counts, content flow, component nesting hierarchy
+- **Visual hierarchy:** what's prominent, what's secondary, spacing rhythm, grouping
+- **States:** empty states, loading states, hover/focus states shown in the prototype
+- **Responsive behavior:** breakpoints, how layout adapts at different widths
 
-Each value must be extracted from the actual CSS in the prototype file, not approximated. Keep this inventory as a mental checklist to reference during implementation.
+**Part 2: Map to Design System**
+The prototype shows WHAT it should look like. The project's design system determines HOW to implement it:
+- **Check the project first:** Read tailwind.config, theme files, CSS variables, globals.css for the project's design tokens
+- **Use shadcn/ui components** where the prototype's elements map to existing components (cards, buttons, inputs, tables, dialogs, etc.) -- don't hand-build what shadcn already provides
+- **Map prototype colors to design system tokens:** If the prototype uses `#3b82f6`, find the closest design system token (e.g., `primary`, `blue-500`). Use the design system token, not the raw hex value
+- **Map prototype spacing to design system scale:** If the prototype uses `gap: 24px`, use the design system equivalent (e.g., `gap-6` in Tailwind). Match the visual intent, not the literal pixel value
+- **Map prototype typography** to the project's type scale (e.g., `text-sm`, `text-lg`, `font-semibold`)
+- **Use design system border-radius, shadows, and other tokens** rather than copying raw CSS values
 
-**Part 2: Implementation Rules**
-The prototype is a design SPECIFICATION -- match its visual output precisely:
+**Part 3: Implementation Rules**
 - Build proper framework components (React/Next.js/etc) -- do NOT copy raw HTML from the prototype into JSX
+- Component structure should mirror the prototype's nesting hierarchy and layout flow
 - Do NOT modify the prototype file
 - Do NOT use the prototype for non-visual concerns (API contracts, state management, data flow)
-- Every design token extracted in Part 1 MUST appear in the implementation (use Tailwind classes, CSS variables, or inline styles as appropriate to the project's conventions)
-- When the prototype uses specific spacing (e.g., `gap: 24px`), use that exact value -- do not round or approximate
-- When the prototype uses specific colors, use those exact colors -- do not substitute similar ones
-- Component structure should mirror the prototype's nesting hierarchy
+- When the design system has no matching token for a prototype value, use the closest available token -- consistency with the design system wins over pixel-perfect prototype matching
 
-**Part 3: Post-Implementation Fidelity Check**
-After completing any task that touches frontend/UI files (JSX, TSX, CSS, HTML):
+**Part 4: Post-Implementation Fidelity Check**
+After completing any task that touches frontend/UI files:
 - Re-read the prototype file
-- Compare each extracted design token against what was implemented
-- Check: layout structure matches (grid cols, flex direction, gaps)
-- Check: colors match (background, text, accent, border)
-- Check: spacing matches (padding, margin, gap values)
-- Check: typography matches (font size, weight, family)
-- Check: border-radius and shadows match
-- If any token was missed or approximated, fix it before committing the task
-- In the task commit message, note: "Prototype fidelity verified"
+- Compare: does the implementation achieve the same visual layout, hierarchy, and feel?
+- Check: layout structure matches (grid cols, flex direction, content flow)
+- Check: component hierarchy matches (what wraps what)
+- Check: visual states are implemented (empty, loading, hover)
+- Check: responsive behavior matches prototype breakpoints
+- If the layout or visual hierarchy is wrong, fix it before committing
+- Minor differences in exact spacing/color are fine IF they come from using design system tokens correctly
 
 In SUMMARY.md, note: "Implemented from prototype: {prototype-file}"
 

@@ -727,7 +727,7 @@ Each prototype shows ONE plan's visual output. Include:
 - **Placeholder data:** Realistic fake content (not "Lorem ipsum")
 - **Interactive element states:** Buttons, inputs, empty states, loading states, error states
 - **Responsive breakpoints:** Desktop + mobile widths if relevant
-- **Design system tokens:** Colors and typography from project's design system (check for tailwind.config, theme files, CSS variables)
+- **Design system alignment:** Before creating the prototype, read the project's design system files (tailwind.config, theme files, globals.css, CSS variables). Use the project's actual colors, spacing scale, and typography in the prototype CSS. Add CSS comments mapping values to design tokens (e.g., `/* primary = hsl(var(--primary)) */`, `/* gap-6 = 24px */`). This helps the executor map prototype visuals to the correct Tailwind classes and shadcn components
 
 ## Prototype Exclusions
 
@@ -742,7 +742,7 @@ Do NOT include in prototypes:
 
 Cap prototypes at **~150 lines of HTML**. Spend **10-15% of planner context** on prototypes, not 30-40%.
 
-If a plan has many visual elements, create a simpler prototype showing layout structure rather than every detail. The prototype is a guide, not a pixel-perfect spec.
+If a plan has many visual elements, create a simpler prototype showing layout structure rather than every detail. The prototype communicates visual intent -- the executor maps it to the project's design system and shadcn components.
 
 ## Prototype Template
 
