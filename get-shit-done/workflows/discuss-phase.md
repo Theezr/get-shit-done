@@ -386,8 +386,7 @@ Created: .planning/phases/${PADDED_PHASE}-${SLUG}/${PADDED_PHASE}-CONTEXT.md
 </step>
 
 <step name="git_commit">
-Commit phase context (uses `commit_docs` from init internally):
-
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(${padded_phase}): capture phase context" --files "${phase_dir}/${padded_phase}-CONTEXT.md"
 ```
@@ -404,8 +403,7 @@ node ~/.claude/get-shit-done/bin/gsd-tools.cjs state record-session \
   --resume-file "${phase_dir}/${padded_phase}-CONTEXT.md"
 ```
 
-Commit STATE.md:
-
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(state): record phase ${PHASE} context session" --files .planning/STATE.md
 ```

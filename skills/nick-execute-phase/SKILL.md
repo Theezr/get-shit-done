@@ -169,6 +169,7 @@ Read status from VERIFICATION.md:
 
 Mark phase complete in ROADMAP.md (date, status).
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(phase-{X}): complete phase execution" --files .planning/ROADMAP.md .planning/STATE.md .planning/phases/{phase_dir}/*-VERIFICATION.md .planning/REQUIREMENTS.md
 ```

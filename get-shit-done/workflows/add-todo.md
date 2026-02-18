@@ -117,11 +117,12 @@ If `.planning/STATE.md` exists:
 <step name="git_commit">
 Commit the todo and any updated state:
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: capture todo - [title]" --files .planning/todos/pending/[filename] .planning/STATE.md
 ```
 
-Tool respects `commit_docs` config and gitignore automatically.
+Skipped when `commit_docs` is false.
 
 Confirm: "Committed: docs: capture todo - [title]"
 </step>

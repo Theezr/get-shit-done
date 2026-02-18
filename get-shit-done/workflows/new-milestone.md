@@ -70,6 +70,7 @@ Keep Accumulated Context section from previous milestone.
 
 Delete MILESTONE-CONTEXT.md if exists (consumed).
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: start milestone v[X.Y] [Name]" --files .planning/PROJECT.md .planning/STATE.md
 ```
@@ -245,6 +246,8 @@ Does this capture what you're building? (yes / adjust)
 If "adjust": Return to scoping.
 
 **Commit requirements:**
+
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: define milestone v[X.Y] requirements" --files .planning/REQUIREMENTS.md
 ```
@@ -320,6 +323,8 @@ Success criteria:
 **If "Review":** Display raw ROADMAP.md, re-ask.
 
 **Commit roadmap** (after approval):
+
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: create milestone v[X.Y] roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```

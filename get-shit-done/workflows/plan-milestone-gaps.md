@@ -131,6 +131,7 @@ mkdir -p ".planning/phases/{NN}-{name}"
 
 ## 8. Commit Roadmap Update
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs(roadmap): add gap closure phases {N}-{M}" --files .planning/ROADMAP.md
 ```

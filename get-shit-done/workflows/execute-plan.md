@@ -388,6 +388,7 @@ Counts PLAN vs SUMMARY files on disk. Updates progress table row with correct co
 <step name="git_commit_metadata">
 Task code already committed per-task. Commit plan metadata:
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs({phase}-{plan}): complete [plan-name] plan" --files .planning/phases/XX-name/{phase}-{plan}-SUMMARY.md .planning/STATE.md .planning/ROADMAP.md
 ```
@@ -403,6 +404,7 @@ git diff --name-only ${FIRST_TASK}^..HEAD 2>/dev/null
 
 Update only structural changes: new src/ dir → STRUCTURE.md | deps → STACK.md | file pattern → CONVENTIONS.md | API client → INTEGRATIONS.md | config → STACK.md | renamed → update paths. Skip code-only/bugfix/content changes.
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "" --files .planning/codebase/*.md --amend
 ```

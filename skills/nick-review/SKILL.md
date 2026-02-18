@@ -91,6 +91,7 @@ If REVIEW.md does not exist: Error -- "Code reviewer did not produce REVIEW.md."
 - Cross-reference with SUMMARY.md key-files to ensure nothing is missed
 - Commit review artifacts:
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit \
   "docs(phase-{X}): review PASSED -- code quality verified" \

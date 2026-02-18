@@ -154,10 +154,14 @@ If todo was moved to done/, commit the change:
 
 ```bash
 git rm --cached .planning/todos/pending/[filename] 2>/dev/null || true
+```
+
+If `commit_docs` is true (from init JSON):
+```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: start work on todo - [title]" --files .planning/todos/done/[filename] .planning/STATE.md
 ```
 
-Tool respects `commit_docs` config and gitignore automatically.
+Skipped when `commit_docs` is false.
 
 Confirm: "Committed: docs: start work on todo - [title]"
 </step>

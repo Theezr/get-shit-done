@@ -290,7 +290,7 @@ Clear Current Test section:
 [testing complete]
 ```
 
-Commit the UAT file:
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "test({phase_num}): complete UAT - {passed} passed, {issues} issues" --files ".planning/phases/XX-name/{phase_num}-UAT.md"
 ```

@@ -212,6 +212,10 @@ Do not compress. Capture everything gathered.
 
 ```bash
 mkdir -p .planning
+```
+
+If `commit_docs` is true (from init JSON):
+```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: initialize project" --files .planning/PROJECT.md
 ```
 
@@ -361,6 +365,7 @@ Create `.planning/config.json` with all settings:
 
 **Commit config.json:**
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "chore: add project config" --files .planning/config.json
 ```
@@ -759,6 +764,7 @@ If "adjust": Return to scoping.
 
 **Commit requirements:**
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: define v1 requirements" --files .planning/REQUIREMENTS.md
 ```
@@ -892,6 +898,7 @@ Use AskUserQuestion:
 
 **Commit roadmap (after approval or auto mode):**
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: create roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```
