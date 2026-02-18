@@ -130,17 +130,41 @@ Read the plan file provided in your prompt context.
 Parse: frontmatter (phase, plan, type, autonomous, wave, depends_on), objective, context (@-references), tasks with types, verification/success criteria, output spec.
 
 **If plan frontmatter has `prototype` field:**
-Read the prototype file at `$PHASE_DIR/{prototype}` to understand the expected visual layout.
-Use the prototype as a design specification:
-- Match the prototype's layout structure (grid, flex, spacing)
-- Follow the prototype's component hierarchy
-- Use placeholder data patterns as guidance for realistic defaults
-- Implement responsive breakpoints shown in the prototype
+Read the prototype file at `$PHASE_DIR/{prototype}` and treat it as a design SPECIFICATION with strict visual fidelity.
 
-The prototype is a GUIDE, not a template:
-- Do NOT copy prototype HTML into JSX (build proper React/framework components)
+**Part 1: Design Token Extraction**
+Before writing any code, extract a design token inventory from the prototype's CSS:
+- **Colors:** background colors, text colors, accent colors, border colors (exact hex/rgb/hsl values)
+- **Spacing:** margins, paddings, gaps (exact values, e.g., `gap: 24px`, `padding: 16px 24px`)
+- **Typography:** font families, font sizes, font weights, line heights
+- **Borders:** border-radius values, border widths, border styles
+- **Shadows:** box-shadow values
+- **Layout:** grid/flex structure, column counts, breakpoints, max-widths
+- **Component hierarchy:** what wraps what, nesting structure
+
+Each value must be extracted from the actual CSS in the prototype file, not approximated. Keep this inventory as a mental checklist to reference during implementation.
+
+**Part 2: Implementation Rules**
+The prototype is a design SPECIFICATION -- match its visual output precisely:
+- Build proper framework components (React/Next.js/etc) -- do NOT copy raw HTML from the prototype into JSX
 - Do NOT modify the prototype file
-- Do NOT use prototype for non-visual aspects (API contracts, state management, data flow)
+- Do NOT use the prototype for non-visual concerns (API contracts, state management, data flow)
+- Every design token extracted in Part 1 MUST appear in the implementation (use Tailwind classes, CSS variables, or inline styles as appropriate to the project's conventions)
+- When the prototype uses specific spacing (e.g., `gap: 24px`), use that exact value -- do not round or approximate
+- When the prototype uses specific colors, use those exact colors -- do not substitute similar ones
+- Component structure should mirror the prototype's nesting hierarchy
+
+**Part 3: Post-Implementation Fidelity Check**
+After completing any task that touches frontend/UI files (JSX, TSX, CSS, HTML):
+- Re-read the prototype file
+- Compare each extracted design token against what was implemented
+- Check: layout structure matches (grid cols, flex direction, gaps)
+- Check: colors match (background, text, accent, border)
+- Check: spacing matches (padding, margin, gap values)
+- Check: typography matches (font size, weight, family)
+- Check: border-radius and shadows match
+- If any token was missed or approximated, fix it before committing the task
+- In the task commit message, note: "Prototype fidelity verified"
 
 In SUMMARY.md, note: "Implemented from prototype: {prototype-file}"
 
