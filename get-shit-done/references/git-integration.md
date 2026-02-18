@@ -246,3 +246,26 @@ Each plan produces 2-4 commits (tasks + metadata). Clear, granular, bisectable.
 - "Commit noise" irrelevant when consumer is Claude, not humans
 
 </commit_strategy_rationale>
+
+<commit_docs_guard>
+
+## Planning File Commits
+
+All `.planning/` commit calls are conditional on `commit_docs` being true. This is a user config setting (`config.json`) that controls whether planning artifacts are tracked in git.
+
+**Pattern for agents and workflows:**
+
+```
+If `commit_docs` is true (from init JSON):
+```bash
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "..." --files .planning/...
+```
+```
+
+**When `commit_docs` is false:** Skip the commit call entirely. Do NOT call `gsd-tools.cjs commit` and then handle the "skipped" response -- the call should never be made.
+
+**Why guard at the prompt level:** `gsd-tools.cjs commit` already returns `skipped_commit_docs_false` or `skipped_gitignored` when .planning is not committable. But LLM agents may interpret "skipped" as failure and attempt workarounds (raw git commands, retries). Pre-guarding prevents this entirely.
+
+**Note:** `commit_docs` controls git only, NOT file writing. Always write .planning files to disk regardless of this setting.
+
+</commit_docs_guard>
