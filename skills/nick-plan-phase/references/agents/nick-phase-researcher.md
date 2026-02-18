@@ -484,6 +484,7 @@ Warning: `commit_docs` controls git only, NOT file writing. Always write first.
 
 ## Step 6: Commit Research (optional)
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs($PHASE): research phase domain" --files "$PHASE_DIR/$PADDED_PHASE-RESEARCH.md"
 ```

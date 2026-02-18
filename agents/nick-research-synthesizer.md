@@ -127,6 +127,7 @@ Write to `.planning/research/SUMMARY.md`
 
 The 4 parallel researcher agents write files but do NOT commit. You commit everything together.
 
+If `commit_docs` is true (from orchestrator context):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs: complete project research" --files .planning/research/
 ```

@@ -795,6 +795,7 @@ Group by plan, dimension, severity.
 
 ### Step 6: Commit
 
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "fix($PHASE): revise plans based on checker feedback" --files .planning/phases/$PHASE-*/$PHASE-*-PLAN.md
 ```
@@ -1060,6 +1061,7 @@ Plans:
 </step>
 
 <step name="git_commit">
+If `commit_docs` is true (from init JSON):
 ```bash
 node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit "docs($PHASE): create phase plan" --files .planning/phases/$PHASE-*/$PHASE-*-PLAN.md .planning/ROADMAP.md
 ```
