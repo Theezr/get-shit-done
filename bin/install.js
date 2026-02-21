@@ -874,13 +874,13 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
   }
 
-  // 3b. Remove GSD skills (gsd-* directories only)
+  // 3b. Remove GSD skills (gsd-* and nick-* directories)
   const skillsDir = path.join(targetDir, 'skills');
   if (fs.existsSync(skillsDir)) {
     const skillDirs = fs.readdirSync(skillsDir);
     let skillCount = 0;
     for (const dir of skillDirs) {
-      if (dir.startsWith('gsd-')) {
+      if (dir.startsWith('gsd-') || dir.startsWith('nick-')) {
         fs.rmSync(path.join(skillsDir, dir), { recursive: true });
         skillCount++;
       }
@@ -1453,7 +1453,7 @@ function install(isGlobal, runtime = 'claude') {
     }
   }
 
-  // Copy skills to skills directory (gsd-* skills only)
+  // Copy skills to skills directory (all skill directories)
   const skillsSrc = path.join(src, 'skills');
   if (fs.existsSync(skillsSrc)) {
     const skillsDest = path.join(targetDir, 'skills');
@@ -1461,7 +1461,7 @@ function install(isGlobal, runtime = 'claude') {
 
     const skillEntries = fs.readdirSync(skillsSrc, { withFileTypes: true });
     for (const entry of skillEntries) {
-      if (entry.isDirectory() && entry.name.startsWith('gsd-')) {
+      if (entry.isDirectory()) {
         const skillSrcDir = path.join(skillsSrc, entry.name);
         const skillDestDir = path.join(skillsDest, entry.name);
         copyWithPathReplacement(skillSrcDir, skillDestDir, pathPrefix, runtime);
